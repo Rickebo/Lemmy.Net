@@ -9,7 +9,7 @@
         <Authors>rickebo</Authors>
         <PackageProjectUrl>https://github.com/Rickebo/Lemmy.Net</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Rickebo/Lemmy.Net</RepositoryUrl>
-        <PackageLicenseUrl>https://github.com/Rickebo/Lemmy.Net/LICENSE</PackageLicenseUrl>
+        <PackageLicenseUrl>https://raw.githubusercontent.com/Rickebo/Lemmy.Net/master/LICENSE</PackageLicenseUrl>
     </PropertyGroup>
 
     <ItemGroup>
