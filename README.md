@@ -10,7 +10,7 @@ See the [lemmy-js-client docs](https://join-lemmy.org/api/classes/LemmyHttp.html
 ## Installation
 
 ### NuGet
-Either find and install the Lemmy.Net package in your IDE's NuGet package manager, or run the following command in your project directory:
+Either find and install the [Lemmy.Net package](https://www.nuget.org/packages/Lemmy.Net) in your IDE's NuGet package manager, or run the following command in your project directory:
 ```sh
 dotnet add package Lemmy.Net
 ```
