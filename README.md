@@ -7,6 +7,16 @@ A .NET 7 library for interacting with the Lemmy API, based on [lemmy-js-client](
 ## Documentation
 See the [lemmy-js-client docs](https://join-lemmy.org/api/classes/LemmyHttp.html) for documentation.
 
+## Installation
+
+### NuGet
+Either find and install the Lemmy.Net package in your IDE's NuGet package manager, or run the following command in your project directory:
+```sh
+dotnet add package Lemmy.Net
+```
+
+
+
 ## Example usage
 See [Examples](Examples) for fully-working example projects on how the API can be used.
 
