@@ -283,6 +283,19 @@ public class LemmyHttp : LemmyHttpClient
         }
     }
 
+    public async Task<long?> FindCommunityId(string name, ListingType listingType = ListingType.Local)
+    {
+        var community = await Search(new Search()
+        {
+            Type = SearchType.Communities,
+            Q = name,
+            Limit = 1,
+            ListingType = listingType
+        });
+
+        return community?.Communities?.FirstOrDefault()?.Community?.Id;
+    }
+    
     #region From lemmy-js-client, ported to C#
 
     /**
