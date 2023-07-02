@@ -23,29 +23,18 @@ var communityName = Environment.GetEnvironmentVariable("LEMMY_COMMUNITY_NAME");
 if (string.IsNullOrEmpty(communityName))
     throw new Exception("Invalid community name provided from environment variable.");
 
-var community = await api.Search(new Search()
-{
-    Type = SearchType.Communities,
-    Q = communityName,
-    Limit = 1,
-    ListingType = ListingType.Local
-});
+var communityId = await api.FindCommunityId(communityName);
 
-if (community == null || community.Communities.Count == 0)
+if (communityId == null)
     throw new Exception("Could not find community with given name.");
 
-Console.WriteLine(
-    $"Found matching community {community.Communities.First().Community.Name} " +
-    $"with id {community.Communities.First().Community.Id}"
-);
-
-var communityId = community.Communities.First().Community.Id;
+Console.WriteLine($"Found matching community with id {communityId}");
 
 // Create a post in the community with the id found above.
 var post = await api.CreatePost(
     new CreatePost()
     {
-        CommunityId = communityId,
+        CommunityId = communityId.Value,
         Body = "This is a test post from Lemmy.Net",
         Name = "Lemmy.Net Test Post"
     }
