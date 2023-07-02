@@ -260,6 +260,8 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) where TRequest : IPaginatedResult
     {
+        seed.Page ??= 1;
+
         while (!cancellationToken.IsCancellationRequested)
         {
             var page = await pageReader(seed);
