@@ -1,5 +1,5 @@
 # Lemmy.Net
-![Nuget](https://img.shields.io/nuget/v/Lemmy.Net)
+[![Nuget](https://img.shields.io/nuget/v/Lemmy.Net)](https://www.nuget.org/packages/Lemmy.Net)
 
 A .NET 7 library for interacting with the Lemmy API, based on [lemmy-js-client](https://github.com/LemmyNet/lemmy-js-client) and written in C#.
 
