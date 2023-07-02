@@ -29,7 +29,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetSite, GetSiteResponse>(
-            "/site",
+            "site",
             request,
             cancellationToken: cancellationToken
         );
@@ -42,7 +42,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<SiteResponse?> CreateSite(CreateSite request, CancellationToken cancellationToken = default) =>
         await Post<CreateSite, SiteResponse>(
-            "/site",
+            "site",
             request,
             cancellationToken: cancellationToken
         );
@@ -55,7 +55,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<SiteResponse?> EditSite(EditSite request, CancellationToken cancellationToken = default) =>
         await Put<EditSite, SiteResponse>(
-            "/site",
+            "site",
             request,
             cancellationToken: cancellationToken
         );
@@ -68,7 +68,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<GetSiteResponse?> LeaveAdmin(LeaveAdmin request, CancellationToken cancellationToken = default) =>
         await Post<LeaveAdmin, GetSiteResponse>(
-            "/user/leave_admin",
+            "user/leave_admin",
             request,
             cancellationToken: cancellationToken
         );
@@ -84,7 +84,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetModlog, GetModlogResponse>(
-            "/modlog",
+            "modlog",
             request,
             cancellationToken: cancellationToken
         );
@@ -97,7 +97,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<SearchResponse?> Search(Search request, CancellationToken cancellationToken = default) =>
         await Get<Search, SearchResponse>(
-            "/search",
+            "search",
             request,
             cancellationToken: cancellationToken
         );
@@ -113,7 +113,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<ResolveObject, ResolveObjectResponse>(
-            "/resolve_object",
+            "resolve_object",
             request,
             cancellationToken: cancellationToken
         );
@@ -129,7 +129,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<CreateCommunity, CommunityResponse>(
-            "/community",
+            "community",
             request,
             cancellationToken: cancellationToken
         );
@@ -145,7 +145,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetCommunity, GetCommunityResponse>(
-            "/community",
+            "community",
             request ?? new(),
             cancellationToken: cancellationToken
         );
@@ -161,7 +161,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Put<EditCommunity, CommunityResponse>(
-            "/community",
+            "community",
             request,
             cancellationToken: cancellationToken
         );
@@ -177,7 +177,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<ListCommunities, ListCommunitiesResponse>(
-            "/community/list",
+            "community/list",
             request ?? new(),
             cancellationToken: cancellationToken
         );
@@ -193,7 +193,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<FollowCommunity, CommunityResponse>(
-            "/community/follow",
+            "community/follow",
             request,
             cancellationToken: cancellationToken
         );
@@ -209,7 +209,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<BlockCommunity, BlockCommunityResponse>(
-            "/community/block",
+            "community/block",
             request,
             cancellationToken: cancellationToken
         );
@@ -225,7 +225,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<DeleteCommunity, CommunityResponse>(
-            "/community/delete",
+            "community/delete",
             request,
             cancellationToken: cancellationToken
         );
@@ -241,7 +241,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<RemoveCommunity, CommunityResponse>(
-            "/community/remove",
+            "community/remove",
             request,
             cancellationToken: cancellationToken
         );
@@ -257,7 +257,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<TransferCommunity, GetCommunityResponse>(
-            "/community/transfer",
+            "community/transfer",
             request,
             cancellationToken: cancellationToken
         );
@@ -273,7 +273,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<BanFromCommunity, BanFromCommunityResponse>(
-            "/community/ban_user",
+            "community/ban_user",
             request,
             cancellationToken: cancellationToken
         );
@@ -289,7 +289,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<AddModToCommunity, AddModToCommunityResponse>(
-            "/community/mod",
+            "community/mod",
             request,
             cancellationToken: cancellationToken
         );
@@ -302,7 +302,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<PostResponse?> CreatePost(CreatePost request, CancellationToken cancellationToken = default) =>
         await Post<CreatePost, PostResponse>(
-            "/post",
+            "post",
             request,
             cancellationToken: cancellationToken
         );
@@ -318,7 +318,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetPost, GetPostResponse>(
-            "/post",
+            "post",
             request ?? new(),
             cancellationToken: cancellationToken
         );
@@ -331,7 +331,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<PostResponse?> EditPost(EditPost request, CancellationToken cancellationToken = default) =>
         await Put<EditPost, PostResponse>(
-            "/post",
+            "post",
             request,
             cancellationToken: cancellationToken
         );
@@ -344,7 +344,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<PostResponse?> DeletePost(DeletePost request, CancellationToken cancellationToken = default) =>
         await Post<DeletePost, PostResponse>(
-            "/post/delete",
+            "post/delete",
             request,
             cancellationToken: cancellationToken
         );
@@ -357,7 +357,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<PostResponse?> RemovePost(RemovePost request, CancellationToken cancellationToken = default) =>
         await Post<RemovePost, PostResponse>(
-            "/post/remove",
+            "post/remove",
             request,
             cancellationToken: cancellationToken
         );
@@ -373,7 +373,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<MarkPostAsRead, PostResponse>(
-            "/post/mark_as_read",
+            "post/mark_as_read",
             request,
             cancellationToken: cancellationToken
         );
@@ -386,7 +386,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<PostResponse?> LockPost(LockPost request, CancellationToken cancellationToken = default)
         => await Post<LockPost, PostResponse>(
-            "/post/lock",
+            "post/lock",
             request,
             cancellationToken: cancellationToken
         );
@@ -399,7 +399,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<PostResponse?> FeaturePost(FeaturePost request, CancellationToken cancellationToken = default) =>
         await Post<FeaturePost, PostResponse>(
-            "/post/feature",
+            "post/feature",
             request,
             cancellationToken: cancellationToken
         );
@@ -415,7 +415,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetPosts, GetPostsResponse>(
-            "/post/list",
+            "post/list",
             request ?? new(),
             cancellationToken: cancellationToken
         );
@@ -428,7 +428,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<PostResponse?> LikePost(CreatePostLike request, CancellationToken cancellationToken = default) =>
         await Post<CreatePostLike, PostResponse>(
-            "/post/like",
+            "post/like",
             request,
             cancellationToken: cancellationToken
         );
@@ -441,7 +441,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<PostResponse?> SavePost(SavePost request, CancellationToken cancellationToken = default) =>
         await Put<SavePost, PostResponse>(
-            "/post/save",
+            "post/save",
             request,
             cancellationToken: cancellationToken
         );
@@ -457,7 +457,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<CreatePostReport, PostReportResponse>(
-            "/post/report",
+            "post/report",
             request,
             cancellationToken: cancellationToken
         );
@@ -473,7 +473,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Put<ResolvePostReport, PostReportResponse>(
-            "/post/report/resolve",
+            "post/report/resolve",
             request,
             cancellationToken: cancellationToken
         );
@@ -489,7 +489,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<ListPostReports, ListPostReportsResponse>(
-            "/post/report/list",
+            "post/report/list",
             request,
             cancellationToken: cancellationToken
         );
@@ -505,7 +505,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetSiteMetadata, GetSiteMetadataResponse>(
-            "/post/site_metadata",
+            "post/site_metadata",
             request,
             cancellationToken: cancellationToken
         );
@@ -521,7 +521,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<CreateComment, CommentResponse>(
-            "/comment",
+            "comment",
             request,
             cancellationToken: cancellationToken
         );
@@ -537,7 +537,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Put<EditComment, CommentResponse>(
-            "/comment",
+            "comment",
             request,
             cancellationToken: cancellationToken
         );
@@ -553,7 +553,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<DeleteComment, CommentResponse>(
-            "/comment/delete",
+            "comment/delete",
             request,
             cancellationToken: cancellationToken
         );
@@ -569,7 +569,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<RemoveComment, CommentResponse>(
-            "/comment/remove",
+            "comment/remove",
             request,
             cancellationToken: cancellationToken
         );
@@ -585,7 +585,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<MarkCommentReplyAsRead, CommentReplyResponse>(
-            "/comment/mark_as_read",
+            "comment/mark_as_read",
             request,
             cancellationToken: cancellationToken
         );
@@ -601,7 +601,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<CreateCommentLike, CommentResponse>(
-            "/comment/like",
+            "comment/like",
             request,
             cancellationToken: cancellationToken
         );
@@ -617,7 +617,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Put<SaveComment, CommentResponse>(
-            "/comment/save",
+            "comment/save",
             request,
             cancellationToken: cancellationToken
         );
@@ -633,7 +633,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<DistinguishComment, CommentResponse>(
-            "/comment/distinguish",
+            "comment/distinguish",
             request,
             cancellationToken: cancellationToken
         );
@@ -649,7 +649,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetComments, GetCommentsResponse>(
-            "/comment/list",
+            "comment/list",
             request ?? new(),
             cancellationToken: cancellationToken
         );
@@ -662,7 +662,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<CommentResponse?> GetComment(GetComment request, CancellationToken cancellationToken = default) =>
         await Get<GetComment, CommentResponse>(
-            "/comment",
+            "comment",
             request,
             cancellationToken: cancellationToken
         );
@@ -678,7 +678,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<CreateCommentReport, CommentReportResponse>(
-            "/comment/report",
+            "comment/report",
             request,
             cancellationToken: cancellationToken
         );
@@ -694,7 +694,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Put<ResolveCommentReport, CommentReportResponse>(
-            "/comment/report/resolve",
+            "comment/report/resolve",
             request,
             cancellationToken: cancellationToken
         );
@@ -710,7 +710,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<ListCommentReports, ListCommentReportsResponse>(
-            "/comment/report/list",
+            "comment/report/list",
             request,
             cancellationToken: cancellationToken
         );
@@ -726,7 +726,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetPrivateMessages, PrivateMessagesResponse>(
-            "/private_message/list",
+            "private_message/list",
             request,
             cancellationToken: cancellationToken
         );
@@ -742,7 +742,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<CreatePrivateMessage, PrivateMessageResponse>(
-            "/private_message",
+            "private_message",
             request,
             cancellationToken: cancellationToken
         );
@@ -758,7 +758,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Put<EditPrivateMessage, PrivateMessageResponse>(
-            "/private_message",
+            "private_message",
             request,
             cancellationToken: cancellationToken
         );
@@ -774,7 +774,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<DeletePrivateMessage, PrivateMessageResponse>(
-            "/private_message/delete",
+            "private_message/delete",
             request,
             cancellationToken: cancellationToken
         );
@@ -790,7 +790,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<MarkPrivateMessageAsRead, PrivateMessageResponse>(
-            "/private_message/mark_as_read",
+            "private_message/mark_as_read",
             request,
             cancellationToken: cancellationToken
         );
@@ -806,7 +806,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<CreatePrivateMessageReport, PrivateMessageReportResponse>(
-            "/private_message/report",
+            "private_message/report",
             request,
             cancellationToken: cancellationToken
         );
@@ -822,7 +822,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Put<ResolvePrivateMessageReport, PrivateMessageReportResponse>(
-            "/private_message/report/resolve",
+            "private_message/report/resolve",
             request,
             cancellationToken: cancellationToken
         );
@@ -838,7 +838,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<ListPrivateMessageReports, ListPrivateMessageReportsResponse>(
-            "/private_message/report/list",
+            "private_message/report/list",
             request,
             cancellationToken: cancellationToken
         );
@@ -851,7 +851,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<LoginResponse?> Register(Register request, CancellationToken cancellationToken = default) =>
         await Post<Register, LoginResponse>(
-            "/user/register",
+            "user/register",
             request,
             cancellationToken: cancellationToken
         );
@@ -864,7 +864,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<LoginResponse?> Login(Login request, CancellationToken cancellationToken = default) =>
         await Post<Login, LoginResponse>(
-            "/user/login",
+            "user/login",
             request,
             cancellationToken: cancellationToken
         );
@@ -880,7 +880,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetPersonDetails, GetPersonDetailsResponse>(
-            "/user",
+            "user",
             request ?? new(),
             cancellationToken: cancellationToken
         );
@@ -896,7 +896,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetPersonMentions, GetPersonMentionsResponse>(
-            "/user/mention",
+            "user/mention",
             request,
             cancellationToken: cancellationToken
         );
@@ -912,7 +912,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<MarkPersonMentionAsRead, PersonMentionResponse>(
-            "/user/mention/mark_as_read",
+            "user/mention/mark_as_read",
             request,
             cancellationToken: cancellationToken
         );
@@ -928,7 +928,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetReplies, GetRepliesResponse>(
-            "/user/replies",
+            "user/replies",
             request,
             cancellationToken: cancellationToken
         );
@@ -941,7 +941,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<BanPersonResponse?> BanPerson(BanPerson request, CancellationToken cancellationToken = default) =>
         await Post<BanPerson, BanPersonResponse>(
-            "/user/ban",
+            "user/ban",
             request,
             cancellationToken: cancellationToken
         );
@@ -957,7 +957,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetBannedPersons, BannedPersonsResponse>(
-            "/user/banned",
+            "user/banned",
             request,
             cancellationToken: cancellationToken
         );
@@ -973,7 +973,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<BlockPerson, BlockPersonResponse>(
-            "/user/block",
+            "user/block",
             request,
             cancellationToken: cancellationToken
         );
@@ -989,7 +989,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetCaptcha, GetCaptchaResponse>(
-            "/user/get_captcha",
+            "user/get_captcha",
             request ?? new(),
             cancellationToken: cancellationToken
         );
@@ -1005,7 +1005,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<DeleteAccount, DeleteAccountResponse>(
-            "/user/delete_account",
+            "user/delete_account",
             request,
             cancellationToken: cancellationToken
         );
@@ -1021,7 +1021,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<PasswordReset, PasswordResetResponse>(
-            "/user/password_reset",
+            "user/password_reset",
             request,
             cancellationToken: cancellationToken
         );
@@ -1037,7 +1037,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<PasswordChangeAfterReset, LoginResponse>(
-            "/user/password_change",
+            "user/password_change",
             request,
             cancellationToken: cancellationToken
         );
@@ -1053,7 +1053,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<MarkAllAsRead, GetRepliesResponse>(
-            "/user/mark_all_as_read",
+            "user/mark_all_as_read",
             request,
             cancellationToken: cancellationToken
         );
@@ -1069,7 +1069,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Put<SaveUserSettings, LoginResponse>(
-            "/user/save_user_settings",
+            "user/save_user_settings",
             request,
             cancellationToken: cancellationToken
         );
@@ -1085,7 +1085,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Put<ChangePassword, LoginResponse>(
-            "/user/change_password",
+            "user/change_password",
             request,
             cancellationToken: cancellationToken
         );
@@ -1101,7 +1101,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetReportCount, GetReportCountResponse>(
-            "/user/report_count",
+            "user/report_count",
             request,
             cancellationToken: cancellationToken
         );
@@ -1117,7 +1117,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetUnreadCount, GetUnreadCountResponse>(
-            "/user/unread_count",
+            "user/unread_count",
             request,
             cancellationToken: cancellationToken
         );
@@ -1133,7 +1133,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<VerifyEmail, VerifyEmailResponse>(
-            "/user/verify_email",
+            "user/verify_email",
             request,
             cancellationToken: cancellationToken
         );
@@ -1146,7 +1146,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<AddAdminResponse?> AddAdmin(AddAdmin request, CancellationToken cancellationToken = default) =>
         await Post<AddAdmin, AddAdminResponse>(
-            "/admin/add",
+            "admin/add",
             request,
             cancellationToken: cancellationToken
         );
@@ -1162,7 +1162,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetUnreadRegistrationApplicationCount, GetUnreadRegistrationApplicationCountResponse>(
-            "/admin/registration_application/count",
+            "admin/registration_application/count",
             request,
             cancellationToken: cancellationToken
         );
@@ -1178,7 +1178,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<ListRegistrationApplications, ListRegistrationApplicationsResponse>(
-            "/admin/registration_application/list",
+            "admin/registration_application/list",
             request,
             cancellationToken: cancellationToken
         );
@@ -1194,7 +1194,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Put<ApproveRegistrationApplication, RegistrationApplicationResponse>(
-            "/admin/registration_application/approve",
+            "admin/registration_application/approve",
             request,
             cancellationToken: cancellationToken
         );
@@ -1210,7 +1210,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<PurgePerson, PurgeItemResponse>(
-            "/admin/purge/person",
+            "admin/purge/person",
             request,
             cancellationToken: cancellationToken
         );
@@ -1226,7 +1226,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<PurgeCommunity, PurgeItemResponse>(
-            "/admin/purge/community",
+            "admin/purge/community",
             request,
             cancellationToken: cancellationToken
         );
@@ -1239,7 +1239,7 @@ public class LemmyHttp : LemmyHttpClient
    */
     public async Task<PurgeItemResponse?> PurgePost(PurgePost request, CancellationToken cancellationToken = default) =>
         await Post<PurgePost, PurgeItemResponse>(
-            "/admin/purge/post",
+            "admin/purge/post",
             request,
             cancellationToken: cancellationToken
         );
@@ -1255,7 +1255,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<PurgeComment, PurgeItemResponse>(
-            "/admin/purge/comment",
+            "admin/purge/comment",
             request,
             cancellationToken: cancellationToken
         );
@@ -1271,7 +1271,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<CreateCustomEmoji, CustomEmojiResponse>(
-            "/custom_emoji",
+            "custom_emoji",
             request,
             cancellationToken: cancellationToken
         );
@@ -1287,7 +1287,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Put<EditCustomEmoji, CustomEmojiResponse>(
-            "/custom_emoji",
+            "custom_emoji",
             request,
             cancellationToken: cancellationToken
         );
@@ -1303,7 +1303,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Post<DeleteCustomEmoji, DeleteCustomEmojiResponse>(
-            "/custom_emoji/delete",
+            "custom_emoji/delete",
             request,
             cancellationToken: cancellationToken
         );
@@ -1319,7 +1319,7 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) =>
         await Get<GetFederatedInstances, GetFederatedInstancesResponse>(
-            "/federated_instances",
+            "federated_instances",
             request,
             cancellationToken: cancellationToken
         );
