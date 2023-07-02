@@ -5,11 +5,12 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>LemmyApi</RootNamespace>
+        <Title>A Lemmy API wrapper for .NET </Title>
+        <Authors>rickebo</Authors>
+        <PackageProjectUrl>https://github.com/Rickebo/Lemmy.Net</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Rickebo/Lemmy.Net</RepositoryUrl>
+        <PackageLicenseUrl>https://github.com/Rickebo/Lemmy.Net/LICENSE</PackageLicenseUrl>
     </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-    </ItemGroup>
 
     <ItemGroup>
       <Compile Remove="Lemmy.cs" />
