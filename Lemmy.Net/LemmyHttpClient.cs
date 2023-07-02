@@ -2,6 +2,7 @@
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
+using Lemmy.Net.Types;
 using LemmyApi.Utils;
 
 namespace LemmyApi;
@@ -9,12 +10,15 @@ namespace LemmyApi;
 public class LemmyHttpClient
 {
     private const string JsonMediaType = "application/json";
+    private const string ApiSuffix = "/api/v3/";
+    private const string PictrsSuffix = "/pictrs/image/";
 
     private readonly string _apiUrl;
     private readonly string? _pictrsUrl;
 
     private readonly JsonSerializerOptions _jsonSerializerOptions;
     private readonly HttpClient _httpClient;
+    protected string? AuthToken { get; set; } = null;
 
     public LemmyHttpClient(
         string apiUrl,
@@ -23,11 +27,23 @@ public class LemmyHttpClient
         JsonSerializerOptions? jsonSerializerOptions = null
     )
     {
-        _apiUrl = apiUrl;
-        _pictrsUrl = pictrsUrl;
-        _jsonSerializerOptions = jsonSerializerOptions ?? new JsonSerializerOptions();
+        var trimmedApiUrl = apiUrl.TrimEnd('/');
+        var trimmedPictrsUrl = pictrsUrl?.TrimEnd('/');
 
+        _apiUrl = trimmedApiUrl.EndsWith(ApiSuffix)
+            ? trimmedApiUrl
+            : trimmedApiUrl + ApiSuffix;
+
+        _pictrsUrl = trimmedPictrsUrl == null || (trimmedPictrsUrl?.EndsWith(PictrsSuffix) ?? false)
+            ? trimmedPictrsUrl
+            : trimmedPictrsUrl + PictrsSuffix;
+
+        _jsonSerializerOptions = jsonSerializerOptions ?? new JsonSerializerOptions();
         _httpClient = new HttpClient();
+        _httpClient.DefaultRequestHeaders.Add(
+            "User-Agent",
+            "Lemmy.Net/0.1"
+        );
 
         if (headers != null)
         {
@@ -57,6 +73,9 @@ public class LemmyHttpClient
         RequestDestination destination = RequestDestination.Api
     )
     {
+        if (AuthToken != null && body is IAuthenticable authenticable)
+            authenticable.Auth = AuthToken;
+        
         var baseUrl = GetBaseUrl(destination);
         var uri = method == HttpMethod.Get
             ? UriUtils.GetUri(body, baseUrl, path)
