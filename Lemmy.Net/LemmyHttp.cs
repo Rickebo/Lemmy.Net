@@ -20,6 +20,29 @@ public class LemmyHttp : LemmyHttpClient
     {
     }
 
+    public async Task<bool> Login(
+        string usernameOrEmail,
+        string password,
+        string? totp2faToken = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var request = new Login()
+        {
+            UsernameOrEmail = usernameOrEmail,
+            Password = password,
+            Totp2faToken = totp2faToken
+        };
+
+        var response = await Login(request, cancellationToken: cancellationToken);
+
+        if (response == null || string.IsNullOrEmpty(response.Jwt))
+            return false;
+
+        AuthToken = response.Jwt;
+        return true;
+    }
+
     public async IAsyncEnumerable<PostView> GetAllPosts(
         GetPosts request,
         [EnumeratorCancellation]
@@ -228,7 +251,7 @@ public class LemmyHttp : LemmyHttpClient
         )
             yield return post;
     }
-    
+
     protected async IAsyncEnumerable<TEntry> Paginate<TRequest, TPage, TEntry>(
         TRequest seed,
         Func<TRequest, Task<TPage?>> pageReader,
