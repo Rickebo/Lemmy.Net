@@ -2,6 +2,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lemmy.Net", "Lemmy.Net\Lemmy.Net.csproj", "{EBDE4BD9-4FD7-45EB-8D6F-E4F44B1483A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListFederatedInstances", "Examples\ListFederatedInstances\ListFederatedInstances.csproj", "{C2555385-EF56-4B85-9E5B-82B524B468B4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{C4DEB4CB-653C-47A5-8506-7F510EEF186D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostAndReply", "Examples\PostAndReply\PostAndReply.csproj", "{642642C7-937A-4ECE-9542-582785483F45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +18,17 @@ Global
 		{EBDE4BD9-4FD7-45EB-8D6F-E4F44B1483A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBDE4BD9-4FD7-45EB-8D6F-E4F44B1483A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBDE4BD9-4FD7-45EB-8D6F-E4F44B1483A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2555385-EF56-4B85-9E5B-82B524B468B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2555385-EF56-4B85-9E5B-82B524B468B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2555385-EF56-4B85-9E5B-82B524B468B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2555385-EF56-4B85-9E5B-82B524B468B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{642642C7-937A-4ECE-9542-582785483F45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{642642C7-937A-4ECE-9542-582785483F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{642642C7-937A-4ECE-9542-582785483F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{642642C7-937A-4ECE-9542-582785483F45}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C2555385-EF56-4B85-9E5B-82B524B468B4} = {C4DEB4CB-653C-47A5-8506-7F510EEF186D}
+		{642642C7-937A-4ECE-9542-582785483F45} = {C4DEB4CB-653C-47A5-8506-7F510EEF186D}
 	EndGlobalSection
 EndGlobal
