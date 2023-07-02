@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class ApproveRegistrationApplication
+    public class ApproveRegistrationApplication : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("approve")]
         public bool Approve { get; set; }

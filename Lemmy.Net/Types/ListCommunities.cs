@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class ListCommunities : IPaginatedResult
+    public class ListCommunities : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }
@@ -13,10 +13,10 @@ namespace Lemmy.Net.Types
         public long? Page { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("sort")]
-        public SortType Sort { get; set; }
+        public SortType? Sort { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("type_")]
-        public ListingType Type { get; set; }
+        public ListingType? Type { get; set; }
 
     }
 }

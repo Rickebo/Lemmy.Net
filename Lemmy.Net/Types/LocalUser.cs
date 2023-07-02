@@ -7,10 +7,10 @@ namespace Lemmy.Net.Types
         public bool AcceptedApplication { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("default_listing_type")]
-        public ListingType DefaultListingType { get; set; }
+        public ListingType? DefaultListingType { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("default_sort_type")]
-        public SortType DefaultSortType { get; set; }
+        public SortType? DefaultSortType { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("email")]
         public string Email { get; set; }

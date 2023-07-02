@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class GetPrivateMessages : IPaginatedResult
+    public class GetPrivateMessages : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }

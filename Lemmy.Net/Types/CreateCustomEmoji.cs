@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class CreateCustomEmoji
+    public class CreateCustomEmoji : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("alt_text")]
         public string AltText { get; set; }

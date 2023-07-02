@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class AddModToCommunity
+    public class AddModToCommunity : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("added")]
         public bool Added { get; set; }

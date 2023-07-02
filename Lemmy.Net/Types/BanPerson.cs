@@ -1,25 +1,25 @@
 namespace Lemmy.Net.Types
 {
 
-    public class BanPerson
+    public class BanPerson : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
-        string Auth { get; set; }
+        public string Auth { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("ban")]
-        bool Ban { get; set; }
+        public bool Ban { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("expires")]
-        long? Expires { get; set; }
+        public long? Expires { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("person_id")]
-        long PersonId { get; set; }
+        public long PersonId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("reason")]
-        string Reason { get; set; }
+        public string Reason { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("remove_data")]
-        bool? RemoveData { get; set; }
+        public bool? RemoveData { get; set; }
 
     }
 }

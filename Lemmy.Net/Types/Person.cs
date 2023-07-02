@@ -1,6 +1,5 @@
 namespace Lemmy.Net.Types
 {
-
     public class Person
     {
         [System.Text.Json.Serialization.JsonPropertyName("actor_id")]
@@ -19,41 +18,39 @@ namespace Lemmy.Net.Types
         public bool Banned { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("banner")]
-        string Banner { get; set; }
+        public string Banner { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("bio")]
-        string Bio { get; set; }
+        public string Bio { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("bot_account")]
-        bool BotAccount { get; set; }
+        public bool BotAccount { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("deleted")]
-        bool Deleted { get; set; }
+        public bool Deleted { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("display_name")]
-        string DisplayName { get; set; }
+        public string DisplayName { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
-        long Id { get; set; }
+        public long Id { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("instance_id")]
-        long InstanceId { get; set; }
+        public long InstanceId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("local")]
-        bool Local { get; set; }
+        public bool Local { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("matrix_user_id")]
-        string MatrixUserId { get; set; }
+        public string MatrixUserId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
-        string Name { get; set; }
+        public string Name { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("published")]
-        string Published { get; set; }
+        public string Published { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("updated")]
-        string Updated { get; set; }
-
+        public string Updated { get; set; }
     }
 }
-

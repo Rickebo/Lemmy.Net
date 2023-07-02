@@ -22,7 +22,7 @@ namespace Lemmy.Net.Types
         public string Reason { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("when_")]
-        string When { get; set; }
+        public string When { get; set; }
 
     }
 }

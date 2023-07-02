@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class CreateSite
+    public class CreateSite : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("actor_name_max_length")]
         public long? ActorNameMaxLength { get; set; }
@@ -34,7 +34,7 @@ namespace Lemmy.Net.Types
         public bool? CommunityCreationAdminOnly { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("default_post_listing_type")]
-        public ListingType DefaultPostListingType { get; set; }
+        public ListingType? DefaultPostListingType { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("default_theme")]
         public string DefaultTheme { get; set; }

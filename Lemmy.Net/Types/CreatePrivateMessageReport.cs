@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class CreatePrivateMessageReport
+    public class CreatePrivateMessageReport : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }

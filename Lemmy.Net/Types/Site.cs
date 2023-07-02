@@ -37,13 +37,13 @@ namespace Lemmy.Net.Types
         public string PublicKey { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("published")]
-        string Published { get; set; }
+        public string Published { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("sidebar")]
-        string Sidebar { get; set; }
+        public string Sidebar { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("updated")]
-        string Updated { get; set; }
+        public string Updated { get; set; }
 
     }
 }

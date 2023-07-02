@@ -7,10 +7,10 @@ namespace Lemmy.Net.Types
         public string Auth { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("post_id")]
-        long PostId { get; set; }
+        public long PostId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("save")]
-        bool Save { get; set; }
+        public bool Save { get; set; }
 
     }
 }

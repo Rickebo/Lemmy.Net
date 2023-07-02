@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class GetPersonDetails : IPaginatedResult
+    public class GetPersonDetails : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }

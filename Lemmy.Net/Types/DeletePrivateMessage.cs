@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class DeletePrivateMessage
+    public class DeletePrivateMessage : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }

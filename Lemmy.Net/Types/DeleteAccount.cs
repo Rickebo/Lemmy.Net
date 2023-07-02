@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class DeleteAccount
+    public class DeleteAccount : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }

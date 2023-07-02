@@ -40,31 +40,31 @@ namespace Lemmy.Net.Types
         public long LanguageId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("local")]
-        bool Local { get; set; }
+        public bool Local { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("locked")]
-        bool Locked { get; set; }
+        public bool Locked { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
-        string Name { get; set; }
+        public string Name { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("nsfw")]
-        bool Nsfw { get; set; }
+        public bool Nsfw { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("published")]
-        string Published { get; set; }
+        public string Published { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("removed")]
-        bool Removed { get; set; }
+        public bool Removed { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("thumbnail_url")]
-        string ThumbnailUrl { get; set; }
+        public string ThumbnailUrl { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("updated")]
-        string Updated { get; set; }
+        public string Updated { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("url")]
-        string Url { get; set; }
+        public string Url { get; set; }
 
     }
 }

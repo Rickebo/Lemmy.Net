@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class ModlogListParams : IPaginatedResult
+    public class ModlogListParams
     {
         [System.Text.Json.Serialization.JsonPropertyName("community_id")]
         public long? CommunityId { get; set; }

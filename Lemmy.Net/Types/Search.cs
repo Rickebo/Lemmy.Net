@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class Search : IPaginatedResult
+    public class Search : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }
@@ -19,7 +19,7 @@ namespace Lemmy.Net.Types
         public long? Limit { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("listing_type")]
-        public ListingType ListingType { get; set; }
+        public ListingType? ListingType { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("page")]
         public long? Page { get; set; }
@@ -28,10 +28,10 @@ namespace Lemmy.Net.Types
         public string Q { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("sort")]
-        SortType Sort { get; set; }
+        public SortType? Sort { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("type_")]
-        SearchType Type { get; set; }
+        public SearchType? Type { get; set; }
 
     }
 }

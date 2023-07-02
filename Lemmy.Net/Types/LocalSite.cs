@@ -22,7 +22,7 @@ namespace Lemmy.Net.Types
         public bool CommunityCreationAdminOnly { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("default_post_listing_type")]
-        public ListingType DefaultPostListingType { get; set; }
+        public ListingType? DefaultPostListingType { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("default_theme")]
         public string DefaultTheme { get; set; }
@@ -52,7 +52,7 @@ namespace Lemmy.Net.Types
         public string Published { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("registration_mode")]
-        public RegistrationMode RegistrationMode { get; set; }
+        public RegistrationMode? RegistrationMode { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("reports_email_admins")]
         public bool ReportsEmailAdmins { get; set; }

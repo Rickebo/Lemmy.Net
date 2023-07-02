@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class GetModlog : IPaginatedResult
+    public class GetModlog : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }

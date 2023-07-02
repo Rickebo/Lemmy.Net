@@ -7,13 +7,13 @@ namespace Lemmy.Net.Types
         public SiteAggregates Counts { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("local_site")]
-        LocalSite LocalSite { get; set; }
+        public LocalSite LocalSite { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("local_site_rate_limit")]
-        LocalSiteRateLimit LocalSiteRateLimit { get; set; }
+        public LocalSiteRateLimit LocalSiteRateLimit { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("site")]
-        Site Site { get; set; }
+        public Site Site { get; set; }
 
     }
 }

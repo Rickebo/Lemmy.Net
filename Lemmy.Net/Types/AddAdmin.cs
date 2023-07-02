@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class AddAdmin
+    public class AddAdmin : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("added")]
         public bool Added { get; set; }

@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class GetPosts : IPaginatedResult
+    public class GetPosts : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }
@@ -22,10 +22,10 @@ namespace Lemmy.Net.Types
         public bool? SavedOnly { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("sort")]
-        SortType Sort { get; set; }
+        public SortType? Sort { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("type_")]
-        ListingType Type { get; set; }
+        public ListingType? Type { get; set; }
 
     }
 }

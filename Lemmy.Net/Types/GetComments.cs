@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class GetComments : IPaginatedResult
+    public class GetComments : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }
@@ -31,10 +31,10 @@ namespace Lemmy.Net.Types
         public bool? SavedOnly { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("sort")]
-        public CommentSortType Sort { get; set; }
+        public CommentSortType? Sort { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("type_")]
-        public ListingType Type { get; set; }
+        public ListingType? Type { get; set; }
 
     }
 }

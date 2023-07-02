@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class EditSite
+    public class EditSite : IAuthenticable
     {
         [System.Text.Json.Serialization.JsonPropertyName("actor_name_max_length")]
         public long? ActorNameMaxLength { get; set; }
@@ -22,109 +22,109 @@ namespace Lemmy.Net.Types
         public string Banner { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("blocked_instances")]
-        List<string> BlockedInstances { get; set; }
+        public List<string> BlockedInstances { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("captcha_difficulty")]
-        string CaptchaDifficulty { get; set; }
+        public string CaptchaDifficulty { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("captcha_enabled")]
-        bool? CaptchaEnabled { get; set; }
+        public bool? CaptchaEnabled { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("community_creation_admin_only")]
-        bool? CommunityCreationAdminOnly { get; set; }
+        public bool? CommunityCreationAdminOnly { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("default_post_listing_type")]
-        ListingType DefaultPostListingType { get; set; }
+        public ListingType? DefaultPostListingType { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("default_theme")]
-        string DefaultTheme { get; set; }
+        public string DefaultTheme { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("description")]
-        string Description { get; set; }
+        public string Description { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("discussion_languages")]
-        List<long> DiscussionLanguages { get; set; }
+        public List<long> DiscussionLanguages { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("enable_downvotes")]
-        bool? EnableDownvotes { get; set; }
+        public bool? EnableDownvotes { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("enable_nsfw")]
-        bool? EnableNsfw { get; set; }
+        public bool? EnableNsfw { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("federation_debug")]
-        bool? FederationDebug { get; set; }
+        public bool? FederationDebug { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("federation_enabled")]
-        bool? FederationEnabled { get; set; }
+        public bool? FederationEnabled { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("hide_modlog_mod_names")]
-        bool? HideModlogModNames { get; set; }
+        public bool? HideModlogModNames { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("icon")]
-        string Icon { get; set; }
+        public string Icon { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("legal_information")]
-        string LegalInformation { get; set; }
+        public string LegalInformation { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
-        string Name { get; set; }
+        public string Name { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("private_instance")]
-        bool? PrivateInstance { get; set; }
+        public bool? PrivateInstance { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("rate_limit_comment")]
-        long? RateLimitComment { get; set; }
+        public long? RateLimitComment { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("rate_limit_comment_per_second")]
-        long? RateLimitCommentPerSecond { get; set; }
+        public long? RateLimitCommentPerSecond { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("rate_limit_image")]
-        long? RateLimitImage { get; set; }
+        public long? RateLimitImage { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("rate_limit_image_per_second")]
-        long? RateLimitImagePerSecond { get; set; }
+        public long? RateLimitImagePerSecond { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("rate_limit_message")]
-        long? RateLimitMessage { get; set; }
+        public long? RateLimitMessage { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("rate_limit_message_per_second")]
-        long? RateLimitMessagePerSecond { get; set; }
+        public long? RateLimitMessagePerSecond { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("rate_limit_post")]
-        long? RateLimitPost { get; set; }
+        public long? RateLimitPost { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("rate_limit_post_per_second")]
-        long? RateLimitPostPerSecond { get; set; }
+        public long? RateLimitPostPerSecond { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("rate_limit_register")]
-        long? RateLimitRegister { get; set; }
+        public long? RateLimitRegister { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("rate_limit_register_per_second")]
-        long? RateLimitRegisterPerSecond { get; set; }
+        public long? RateLimitRegisterPerSecond { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("rate_limit_search")]
-        long? RateLimitSearch { get; set; }
+        public long? RateLimitSearch { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("rate_limit_search_per_second")]
-        long? RateLimitSearchPerSecond { get; set; }
+        public long? RateLimitSearchPerSecond { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("registration_mode")]
-        RegistrationMode RegistrationMode { get; set; }
+        public RegistrationMode RegistrationMode { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("reports_email_admins")]
-        bool? ReportsEmailAdmins { get; set; }
+        public bool? ReportsEmailAdmins { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("require_email_verification")]
-        bool? RequireEmailVerification { get; set; }
+        public bool? RequireEmailVerification { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("sidebar")]
-        string Sidebar { get; set; }
+        public string Sidebar { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("slur_filter_regex")]
-        string SlurFilterRegex { get; set; }
+        public string SlurFilterRegex { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("taglines")]
-        List<string> Taglines { get; set; }
+        public List<string> Taglines { get; set; }
 
     }
 }
