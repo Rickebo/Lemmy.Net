@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Runtime.CompilerServices;
+using System.Text.Json;
 using Lemmy.Net.Types;
 
 namespace LemmyApi;
@@ -18,6 +19,248 @@ public class LemmyHttp : LemmyHttpClient
     )
     {
     }
+
+    public async IAsyncEnumerable<PostView> GetAllPosts(
+        GetPosts request,
+        [EnumeratorCancellation]
+        CancellationToken cancellationToken = default
+    )
+    {
+        await foreach (
+            var post in Paginate(
+                request,
+                currentRequest => GetPosts(currentRequest, cancellationToken),
+                response => response!.Posts,
+                cancellationToken
+            )
+        )
+            yield return post;
+    }
+
+    public async IAsyncEnumerable<CommentView> GetAllComments(
+        GetComments request,
+        [EnumeratorCancellation]
+        CancellationToken cancellationToken = default
+    )
+    {
+        await foreach (
+            var post in Paginate(
+                request,
+                currentRequest => GetComments(currentRequest, cancellationToken),
+                response => response!.Comments,
+                cancellationToken
+            )
+        )
+            yield return post;
+    }
+
+    public async IAsyncEnumerable<T> GetAllModlog<T>(
+        GetModlog request,
+        Func<GetModlogResponse, IEnumerable<T>> selector,
+        [EnumeratorCancellation]
+        CancellationToken cancellationToken = default
+    )
+    {
+        await foreach (
+            var post in Paginate(
+                request,
+                currentRequest => GetModlog(currentRequest, cancellationToken),
+                selector,
+                cancellationToken
+            )
+        )
+            yield return post;
+    }
+
+    public async IAsyncEnumerable<T> GetAllPersonDetails<T>(
+        GetPersonDetails request,
+        Func<GetPersonDetailsResponse, IEnumerable<T>> selector,
+        [EnumeratorCancellation]
+        CancellationToken cancellationToken = default
+    )
+    {
+        await foreach (
+            var post in Paginate(
+                request,
+                currentRequest => GetPersonDetails(currentRequest, cancellationToken),
+                selector,
+                cancellationToken
+            )
+        )
+            yield return post;
+    }
+
+    public async IAsyncEnumerable<PersonMentionView> GetAllPersonMentions(
+        GetPersonMentions request,
+        [EnumeratorCancellation]
+        CancellationToken cancellationToken = default
+    )
+    {
+        await foreach (
+            var post in Paginate(
+                request,
+                currentRequest => GetPersonMentions(currentRequest, cancellationToken),
+                response => response.Mentions,
+                cancellationToken
+            )
+        )
+            yield return post;
+    }
+
+    public async IAsyncEnumerable<PrivateMessageView> GetAllPrivateMessages(
+        GetPrivateMessages request,
+        [EnumeratorCancellation]
+        CancellationToken cancellationToken = default
+    )
+    {
+        await foreach (
+            var post in Paginate(
+                request,
+                currentRequest => GetPrivateMessages(currentRequest, cancellationToken),
+                response => response.PrivateMessages,
+                cancellationToken
+            )
+        )
+            yield return post;
+    }
+
+    public async IAsyncEnumerable<CommentReplyView> GetAllReplies(
+        GetReplies request,
+        [EnumeratorCancellation]
+        CancellationToken cancellationToken = default
+    )
+    {
+        await foreach (
+            var post in Paginate(
+                request,
+                currentRequest => GetReplies(currentRequest, cancellationToken),
+                response => response.Replies,
+                cancellationToken
+            )
+        )
+            yield return post;
+    }
+
+    public async IAsyncEnumerable<CommentReportView> ListAllCommentReports(
+        ListCommentReports request,
+        [EnumeratorCancellation]
+        CancellationToken cancellationToken = default
+    )
+    {
+        await foreach (
+            var post in Paginate(
+                request,
+                currentRequest => ListCommentReports(currentRequest, cancellationToken),
+                response => response.CommentReports,
+                cancellationToken
+            )
+        )
+            yield return post;
+    }
+
+    public async IAsyncEnumerable<CommunityView> ListAllCommunities(
+        ListCommunities request,
+        [EnumeratorCancellation]
+        CancellationToken cancellationToken = default
+    )
+    {
+        await foreach (
+            var post in Paginate(
+                request,
+                currentRequest => ListCommunities(currentRequest, cancellationToken),
+                response => response.Communities,
+                cancellationToken
+            )
+        )
+            yield return post;
+    }
+
+    public async IAsyncEnumerable<PostReportView> ListAllPostReports(
+        ListPostReports request,
+        [EnumeratorCancellation]
+        CancellationToken cancellationToken = default
+    )
+    {
+        await foreach (
+            var post in Paginate(
+                request,
+                currentRequest => ListPostReports(currentRequest, cancellationToken),
+                response => response.PostReports,
+                cancellationToken
+            )
+        )
+            yield return post;
+    }
+
+
+
+    public async IAsyncEnumerable<PrivateMessageReportView> ListAllPrivateMessageReports(
+        ListPrivateMessageReports request,
+        [EnumeratorCancellation]
+        CancellationToken cancellationToken = default
+    )
+    {
+        await foreach (
+            var post in Paginate(
+                request,
+                currentRequest => ListPrivateMessageReports(currentRequest, cancellationToken),
+                response => response.PrivateMessageReports,
+                cancellationToken
+            )
+        )
+            yield return post;
+    }
+
+
+    public async IAsyncEnumerable<RegistrationApplicationView> ListAllRegistrationApplications(
+        ListRegistrationApplications request,
+        [EnumeratorCancellation]
+        CancellationToken cancellationToken = default
+    )
+    {
+        await foreach (
+            var post in Paginate(
+                request,
+                currentRequest => ListRegistrationApplications(currentRequest, cancellationToken),
+                response => response.RegistrationApplications,
+                cancellationToken
+            )
+        )
+            yield return post;
+    }
+    
+    protected async IAsyncEnumerable<TEntry> Paginate<TRequest, TPage, TEntry>(
+        TRequest seed,
+        Func<TRequest, Task<TPage?>> pageReader,
+        Func<TPage, IEnumerable<TEntry>> entryReader,
+        [EnumeratorCancellation]
+        CancellationToken cancellationToken = default
+    ) where TRequest : IPaginatedResult
+    {
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            var page = await pageReader(seed);
+            seed.Page += 1;
+
+            if (page == null)
+                yield break;
+
+            var any = false;
+            foreach (var entry in entryReader(page))
+            {
+                any = true;
+                if (cancellationToken.IsCancellationRequested)
+                    yield break;
+
+                yield return entry;
+            }
+
+            if (!any)
+                yield break;
+        }
+    }
+
+    #region From lemmy-js-client, ported to C#
 
     /**
    * Gets the site, and your user data.
@@ -1323,4 +1566,6 @@ public class LemmyHttp : LemmyHttpClient
             request,
             cancellationToken: cancellationToken
         );
+
+    #endregion
 }

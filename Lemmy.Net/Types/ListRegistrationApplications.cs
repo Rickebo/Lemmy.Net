@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class ListRegistrationApplications
+    public class ListRegistrationApplications : IPaginatedResult
     {
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }

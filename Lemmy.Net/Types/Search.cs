@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class Search
+    public class Search : IPaginatedResult
     {
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }

@@ -1,7 +1,7 @@
 namespace Lemmy.Net.Types
 {
 
-    public class ListCommunities
+    public class ListCommunities : IPaginatedResult
     {
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }
