@@ -1,4 +1,4 @@
-﻿namespace LemmyApi.Utils;
+﻿namespace Lemmy.Net.Utils;
 
 public static class UriUtils
 {

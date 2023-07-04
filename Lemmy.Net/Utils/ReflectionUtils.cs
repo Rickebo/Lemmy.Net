@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using System.Web;
 
-namespace LemmyApi.Utils;
+namespace Lemmy.Net.Utils;
 
 public static class ReflectionUtils
 {

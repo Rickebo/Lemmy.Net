@@ -1,5 +1,5 @@
-﻿using Lemmy.Net.Types;
-using LemmyApi;
+﻿using Lemmy.Net;
+using Lemmy.Net.Types;
 
 var api = new LemmyHttp(
     Environment.GetEnvironmentVariable("LEMMY_API_URL") ?? "https://lemmy.ml"

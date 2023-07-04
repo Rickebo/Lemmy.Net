@@ -3,9 +3,9 @@ using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 using Lemmy.Net.Types;
-using LemmyApi.Utils;
+using Lemmy.Net.Utils;
 
-namespace LemmyApi;
+namespace Lemmy.Net;
 
 public class LemmyHttpClient
 {

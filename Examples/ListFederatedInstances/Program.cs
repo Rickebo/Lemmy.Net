@@ -1,4 +1,4 @@
-﻿using LemmyApi;
+﻿using Lemmy.Net;
 
 var api = new LemmyHttp(
     Environment.GetEnvironmentVariable("LEMMY_API_URL") ?? "https://lemmy.ml"

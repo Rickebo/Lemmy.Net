@@ -2,7 +2,7 @@
 using System.Text.Json;
 using Lemmy.Net.Types;
 
-namespace LemmyApi;
+namespace Lemmy.Net;
 
 public class LemmyHttp : LemmyHttpClient
 {
