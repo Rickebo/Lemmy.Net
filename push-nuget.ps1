@@ -1,0 +1,1 @@
+wsl --cd $pwd ./push-nuget.sh
