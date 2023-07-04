@@ -27,9 +27,9 @@ To print post titles from the [lemmy.ml](https://lemmy.ml) instance, one by one 
 using Lemmy.Net;
 
 var client = new LemmyHttp("https://lemmy.ml");
-await foreach (var post in api.GetAllPosts(new GetPosts()))
+await foreach (var postView in api.GetAllPosts())
 {
-    Console.WriteLine(post.Post.Name);
+    Console.WriteLine(postView.Post.Name);
     
     if (Console.ReadKey().KeyChar != 'n')
         return;
@@ -42,6 +42,6 @@ var api = new LemmyHttp(
     "https://ds9.lemmy.ml"
 );
 
-await foreach (var community in api.ListAllCommunities(new ListCommunities()))
-    Console.WriteLine(community.Community.Name + "@" + new Uri(community.Community.ActorId).Host);
+await foreach (var communityView in api.ListAllCommunities())
+    Console.WriteLine(communityView.Community.Name + "@" + new Uri(communityView.Community.ActorId).Host);
 ```
