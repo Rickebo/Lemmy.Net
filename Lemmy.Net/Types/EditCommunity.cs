@@ -1,14 +1,18 @@
+using Lemmy.Net.Types.Attributes;
+
 namespace Lemmy.Net.Types
 {
 
     public class EditCommunity : IAuthenticable
     {
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("banner")]
         public string Banner { get; set; }
 
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("community_id")]
         public long CommunityId { get; set; }
 

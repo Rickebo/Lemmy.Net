@@ -1,11 +1,15 @@
+using Lemmy.Net.Types.Attributes;
+
 namespace Lemmy.Net.Types
 {
 
     public class CreateComment : IAuthenticable
     {
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }
 
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("content")]
         public string Content { get; set; }
 
@@ -18,6 +22,7 @@ namespace Lemmy.Net.Types
         [System.Text.Json.Serialization.JsonPropertyName("parent_id")]
         public long? ParentId { get; set; }
 
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("post_id")]
         public long PostId { get; set; }
 

@@ -1,3 +1,5 @@
+using Lemmy.Net.Types.Attributes;
+
 namespace Lemmy.Net.Types
 {
 
@@ -24,8 +26,9 @@ namespace Lemmy.Net.Types
         [System.Text.Json.Serialization.JsonPropertyName("page")]
         public long? Page { get; set; }
 
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("q")]
-        public string Q { get; set; }
+        public string Query { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("sort")]
         public SortType? Sort { get; set; }

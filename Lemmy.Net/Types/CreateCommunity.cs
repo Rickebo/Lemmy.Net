@@ -1,8 +1,11 @@
+using Lemmy.Net.Types.Attributes;
+
 namespace Lemmy.Net.Types
 {
 
     public class CreateCommunity : IAuthenticable
     {
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }
 
@@ -18,6 +21,7 @@ namespace Lemmy.Net.Types
         [System.Text.Json.Serialization.JsonPropertyName("icon")]
         public string Icon { get; set; }
 
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string Name { get; set; }
 
@@ -27,6 +31,7 @@ namespace Lemmy.Net.Types
         [System.Text.Json.Serialization.JsonPropertyName("posting_restricted_to_mods")]
         public bool? PostingRestrictedToMods { get; set; }
 
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("title")]
         public string Title { get; set; }
 

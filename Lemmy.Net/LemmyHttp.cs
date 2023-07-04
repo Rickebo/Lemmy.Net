@@ -44,14 +44,14 @@ public class LemmyHttp : LemmyHttpClient
     }
 
     public async IAsyncEnumerable<PostView> GetAllPosts(
-        GetPosts request,
+        GetPosts? request = null,
         [EnumeratorCancellation]
         CancellationToken cancellationToken = default
     )
     {
         await foreach (
             var post in Paginate(
-                request,
+                request ?? new(),
                 currentRequest => GetPosts(currentRequest, cancellationToken),
                 response => response!.Posts,
                 cancellationToken
@@ -61,14 +61,14 @@ public class LemmyHttp : LemmyHttpClient
     }
 
     public async IAsyncEnumerable<CommentView> GetAllComments(
-        GetComments request,
+        GetComments? request = null,
         [EnumeratorCancellation]
         CancellationToken cancellationToken = default
     )
     {
         await foreach (
             var post in Paginate(
-                request,
+                request ?? new(),
                 currentRequest => GetComments(currentRequest, cancellationToken),
                 response => response!.Comments,
                 cancellationToken
@@ -78,7 +78,17 @@ public class LemmyHttp : LemmyHttpClient
     }
 
     public async IAsyncEnumerable<T> GetAllModlog<T>(
-        GetModlog request,
+        Func<GetModlogResponse, IEnumerable<T>> selector,
+        [EnumeratorCancellation]
+        CancellationToken cancellationToken = default
+    )
+    {
+        await foreach (var entry in GetAllModlog(null, selector, cancellationToken))
+            yield return entry;
+    }
+
+    public async IAsyncEnumerable<T> GetAllModlog<T>(
+        GetModlog? request,
         Func<GetModlogResponse, IEnumerable<T>> selector,
         [EnumeratorCancellation]
         CancellationToken cancellationToken = default
@@ -86,7 +96,7 @@ public class LemmyHttp : LemmyHttpClient
     {
         await foreach (
             var post in Paginate(
-                request,
+                request ?? new(),
                 currentRequest => GetModlog(currentRequest, cancellationToken),
                 selector,
                 cancellationToken
@@ -96,7 +106,17 @@ public class LemmyHttp : LemmyHttpClient
     }
 
     public async IAsyncEnumerable<T> GetAllPersonDetails<T>(
-        GetPersonDetails request,
+        Func<GetPersonDetailsResponse, IEnumerable<T>> selector,
+        [EnumeratorCancellation]
+        CancellationToken cancellationToken = default
+    )
+    {
+        await foreach (var entry in GetAllPersonDetails(null, selector, cancellationToken))
+            yield return entry;
+    }
+    
+    public async IAsyncEnumerable<T> GetAllPersonDetails<T>(
+        GetPersonDetails? request,
         Func<GetPersonDetailsResponse, IEnumerable<T>> selector,
         [EnumeratorCancellation]
         CancellationToken cancellationToken = default
@@ -104,7 +124,7 @@ public class LemmyHttp : LemmyHttpClient
     {
         await foreach (
             var post in Paginate(
-                request,
+                request ?? new(),
                 currentRequest => GetPersonDetails(currentRequest, cancellationToken),
                 selector,
                 cancellationToken
@@ -114,14 +134,14 @@ public class LemmyHttp : LemmyHttpClient
     }
 
     public async IAsyncEnumerable<PersonMentionView> GetAllPersonMentions(
-        GetPersonMentions request,
+        GetPersonMentions? request = null,
         [EnumeratorCancellation]
         CancellationToken cancellationToken = default
     )
     {
         await foreach (
             var post in Paginate(
-                request,
+                request ?? new(),
                 currentRequest => GetPersonMentions(currentRequest, cancellationToken),
                 response => response.Mentions,
                 cancellationToken
@@ -131,14 +151,14 @@ public class LemmyHttp : LemmyHttpClient
     }
 
     public async IAsyncEnumerable<PrivateMessageView> GetAllPrivateMessages(
-        GetPrivateMessages request,
+        GetPrivateMessages? request = null,
         [EnumeratorCancellation]
         CancellationToken cancellationToken = default
     )
     {
         await foreach (
             var post in Paginate(
-                request,
+                request ?? new(),
                 currentRequest => GetPrivateMessages(currentRequest, cancellationToken),
                 response => response.PrivateMessages,
                 cancellationToken
@@ -148,14 +168,14 @@ public class LemmyHttp : LemmyHttpClient
     }
 
     public async IAsyncEnumerable<CommentReplyView> GetAllReplies(
-        GetReplies request,
+        GetReplies? request = null,
         [EnumeratorCancellation]
         CancellationToken cancellationToken = default
     )
     {
         await foreach (
             var post in Paginate(
-                request,
+                request ?? new(),
                 currentRequest => GetReplies(currentRequest, cancellationToken),
                 response => response.Replies,
                 cancellationToken
@@ -165,14 +185,14 @@ public class LemmyHttp : LemmyHttpClient
     }
 
     public async IAsyncEnumerable<CommentReportView> ListAllCommentReports(
-        ListCommentReports request,
+        ListCommentReports? request = null,
         [EnumeratorCancellation]
         CancellationToken cancellationToken = default
     )
     {
         await foreach (
             var post in Paginate(
-                request,
+                request ?? new(),
                 currentRequest => ListCommentReports(currentRequest, cancellationToken),
                 response => response.CommentReports,
                 cancellationToken
@@ -182,14 +202,14 @@ public class LemmyHttp : LemmyHttpClient
     }
 
     public async IAsyncEnumerable<CommunityView> ListAllCommunities(
-        ListCommunities request,
+        ListCommunities request = null,
         [EnumeratorCancellation]
         CancellationToken cancellationToken = default
     )
     {
         await foreach (
             var post in Paginate(
-                request,
+                request ?? new(),
                 currentRequest => ListCommunities(currentRequest, cancellationToken),
                 response => response.Communities,
                 cancellationToken
@@ -199,14 +219,14 @@ public class LemmyHttp : LemmyHttpClient
     }
 
     public async IAsyncEnumerable<PostReportView> ListAllPostReports(
-        ListPostReports request,
+        ListPostReports? request = null,
         [EnumeratorCancellation]
         CancellationToken cancellationToken = default
     )
     {
         await foreach (
             var post in Paginate(
-                request,
+                request ?? new(),
                 currentRequest => ListPostReports(currentRequest, cancellationToken),
                 response => response.PostReports,
                 cancellationToken
@@ -218,14 +238,14 @@ public class LemmyHttp : LemmyHttpClient
 
 
     public async IAsyncEnumerable<PrivateMessageReportView> ListAllPrivateMessageReports(
-        ListPrivateMessageReports request,
+        ListPrivateMessageReports? request = null,
         [EnumeratorCancellation]
         CancellationToken cancellationToken = default
     )
     {
         await foreach (
             var post in Paginate(
-                request,
+                request ?? new(),
                 currentRequest => ListPrivateMessageReports(currentRequest, cancellationToken),
                 response => response.PrivateMessageReports,
                 cancellationToken
@@ -236,14 +256,14 @@ public class LemmyHttp : LemmyHttpClient
 
 
     public async IAsyncEnumerable<RegistrationApplicationView> ListAllRegistrationApplications(
-        ListRegistrationApplications request,
+        ListRegistrationApplications? request = null,
         [EnumeratorCancellation]
         CancellationToken cancellationToken = default
     )
     {
         await foreach (
             var post in Paginate(
-                request,
+                request ?? new(),
                 currentRequest => ListRegistrationApplications(currentRequest, cancellationToken),
                 response => response.RegistrationApplications,
                 cancellationToken
@@ -290,7 +310,7 @@ public class LemmyHttp : LemmyHttpClient
         var community = await Search(new Search()
         {
             Type = SearchType.Communities,
-            Q = name,
+            Query = name,
             Limit = 1,
             ListingType = listingType
         });

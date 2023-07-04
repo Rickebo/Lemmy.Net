@@ -75,6 +75,8 @@ public class LemmyHttpClient
     {
         if (AuthToken != null && body is IAuthenticable authenticable)
             authenticable.Auth = AuthToken;
+
+        ReflectionUtils.Validate(body);
         
         var baseUrl = GetBaseUrl(destination);
         var uri = method == HttpMethod.Get

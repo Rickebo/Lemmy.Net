@@ -1,8 +1,11 @@
+using Lemmy.Net.Types.Attributes;
+
 namespace Lemmy.Net.Types
 {
 
     public class EditPost : IAuthenticable
     {
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }
 
@@ -18,6 +21,7 @@ namespace Lemmy.Net.Types
         [System.Text.Json.Serialization.JsonPropertyName("nsfw")]
         public bool? Nsfw { get; set; }
 
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("post_id")]
         public long PostId { get; set; }
 

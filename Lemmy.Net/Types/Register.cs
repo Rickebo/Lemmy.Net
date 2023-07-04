@@ -1,3 +1,5 @@
+using Lemmy.Net.Types.Attributes;
+
 namespace Lemmy.Net.Types
 {
 
@@ -18,15 +20,19 @@ namespace Lemmy.Net.Types
         [System.Text.Json.Serialization.JsonPropertyName("honeypot")]
         public string Honeypot { get; set; }
 
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("password")]
         public string Password { get; set; }
 
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("password_verify")]
         public string PasswordVerify { get; set; }
 
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("show_nsfw")]
         public bool ShowNsfw { get; set; }
 
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("username")]
         public string Username { get; set; }
 

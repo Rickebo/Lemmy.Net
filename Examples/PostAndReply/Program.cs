@@ -40,7 +40,7 @@ var post = await api.CreatePost(
     }
 );
 
-if (post == null || post.PostView == null)
+if (post?.PostView == null)
     throw new Exception("Failed to create post.");
 
 Console.WriteLine($"Created post with post id {post.PostView.Post.Id}");
@@ -54,7 +54,7 @@ var reply = await api.CreateComment(
     }
 );
 
-if (reply == null || reply.CommentView == null)
+if (reply?.CommentView == null)
     throw new Exception("Failed to create reply.");
 
 Console.WriteLine($"Created reply with id {reply.CommentView.Comment.Id}");

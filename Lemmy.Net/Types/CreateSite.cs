@@ -1,3 +1,5 @@
+using Lemmy.Net.Types.Attributes;
+
 namespace Lemmy.Net.Types
 {
 
@@ -15,6 +17,7 @@ namespace Lemmy.Net.Types
         [System.Text.Json.Serialization.JsonPropertyName("application_question")]
         public string ApplicationQuestion { get; set; }
 
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("auth")]
         public string Auth { get; set; }
 
@@ -66,6 +69,7 @@ namespace Lemmy.Net.Types
         [System.Text.Json.Serialization.JsonPropertyName("legal_information")]
         public string LegalInformation { get; set; }
 
+        [RequiredProperty]
         [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string Name { get; set; }
 
