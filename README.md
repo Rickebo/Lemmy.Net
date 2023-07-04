@@ -26,7 +26,7 @@ To print post titles from the [lemmy.ml](https://lemmy.ml) instance, one by one 
 ```cs
 using Lemmy.Net;
 
-var client = new LemmyClient("https://lemmy.ml");
+var client = new LemmyHttp("https://lemmy.ml");
 await foreach (var post in api.GetAllPosts(new GetPosts()))
 {
     Console.WriteLine(post.Post.Name);
