@@ -77,7 +77,7 @@ public class LemmyHttpClient
             authenticable.Auth = AuthToken;
 
         ReflectionUtils.Validate(body);
-        
+
         var baseUrl = GetBaseUrl(destination);
         var uri = method == HttpMethod.Get
             ? UriUtils.GetUri(body, baseUrl, path)
@@ -129,7 +129,18 @@ public class LemmyHttpClient
             destination: destination
         );
 
-        response.EnsureSuccessStatusCode();
+        if (!response.IsSuccessStatusCode)
+        {
+            var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>(
+                cancellationToken: cancellationToken
+            );
+            
+            throw new ApiException(
+                $"Request to API failed with status code {response.StatusCode}: {errorResponse?.Error}",
+                errorResponse?.Error,
+                response.StatusCode
+            );
+        }
 
         return await response.Content.ReadFromJsonAsync<TReceive>(
             _jsonSerializerOptions,
