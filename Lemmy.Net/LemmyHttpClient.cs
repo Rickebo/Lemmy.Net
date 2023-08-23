@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
@@ -11,7 +12,7 @@ public class LemmyHttpClient
 {
     private const string JsonMediaType = "application/json";
     private const string ApiSuffix = "/api/v3/";
-    private const string PictrsSuffix = "/pictrs/image/";
+    private const string PictrsSuffix = "/pictrs/";
 
     private readonly string _apiUrl;
     private readonly string? _pictrsUrl;
@@ -52,7 +53,29 @@ public class LemmyHttpClient
         }
     }
 
-    private string GetBaseUrl(RequestDestination destination) =>
+    protected async Task<TResponse?> PostFormContent<TResponse>(
+        string path,
+        CancellationToken cancellationToken = default,
+        RequestDestination destination = RequestDestination.Pictrs,
+        params NamedContent[] contents
+    )
+    {
+        using var mfdc = new MultipartFormDataContent();
+        
+        foreach (var content in contents)
+            mfdc.Add(content.Content, name: content.Name);
+
+        var baseUrl = GetBaseUrl(destination);
+        var request = new HttpRequestMessage(HttpMethod.Post, UriUtils.GetUri(baseUrl, path))
+        {
+            Content = mfdc
+        };
+
+        var response = await _httpClient.SendAsync(request, cancellationToken);
+        return await HandleResponse<TResponse>(response, cancellationToken);
+    }
+
+    protected string GetBaseUrl(RequestDestination destination) =>
         destination switch
         {
             RequestDestination.Api => _apiUrl,
@@ -129,20 +152,40 @@ public class LemmyHttpClient
             destination: destination
         );
 
-        if (!response.IsSuccessStatusCode)
+        return await HandleResponse<TReceive>(response, cancellationToken);
+    }
+
+    protected async Task<TResponse?> HandleResponse<TResponse>(
+        HttpResponseMessage? responseMessage,
+        CancellationToken cancellationToken = default
+    )
+    {
+        if (!responseMessage.IsSuccessStatusCode)
         {
-            var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>(
-                cancellationToken: cancellationToken
-            );
+            try
+            {
+                var errorResponse = await responseMessage.Content.ReadFromJsonAsync<ErrorResponse>(
+                    cancellationToken: cancellationToken
+                );
+
+                throw new ApiException(
+                    $"Request to API failed with status code {responseMessage.StatusCode}: {errorResponse?.Error}",
+                    errorResponse?.Error,
+                    responseMessage.StatusCode
+                );
+            }
+            catch (JsonException)
+            {
+                throw new ApiException(
+                    $"Request to API failed with status code {responseMessage.StatusCode}.",
+                    "Failed to parse response JSON, unknown error",
+                    responseMessage.StatusCode
+                );
+            }
             
-            throw new ApiException(
-                $"Request to API failed with status code {response.StatusCode}: {errorResponse?.Error}",
-                errorResponse?.Error,
-                response.StatusCode
-            );
         }
 
-        return await response.Content.ReadFromJsonAsync<TReceive>(
+        return await responseMessage.Content.ReadFromJsonAsync<TResponse>(
             _jsonSerializerOptions,
             cancellationToken: cancellationToken
         );
@@ -208,4 +251,6 @@ public class LemmyHttpClient
     {
         public static EmptyBody Instance { get; } = new();
     }
+    
+    protected record NamedContent(string Name, HttpContent Content);
 }

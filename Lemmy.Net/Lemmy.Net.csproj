@@ -10,7 +10,7 @@
         <PackageProjectUrl>https://github.com/Rickebo/Lemmy.Net</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Rickebo/Lemmy.Net</RepositoryUrl>
         <PackageLicenseUrl>https://raw.githubusercontent.com/Rickebo/Lemmy.Net/master/LICENSE</PackageLicenseUrl>
-        <Version>1.0.3</Version>
+        <Version>1.0.4</Version>
     </PropertyGroup>
 
     <ItemGroup>

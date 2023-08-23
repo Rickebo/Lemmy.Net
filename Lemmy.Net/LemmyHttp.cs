@@ -1,6 +1,8 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Lemmy.Net.Types;
+using Lemmy.Net.Utils;
 
 namespace Lemmy.Net;
 
@@ -14,7 +16,7 @@ public class LemmyHttp : LemmyHttpClient
     ) : base(
         apiUrl,
         headers,
-        pictrsUrl,
+        pictrsUrl ?? apiUrl,
         jsonSerializerOptions
     )
     {
@@ -207,7 +209,7 @@ public class LemmyHttp : LemmyHttpClient
         await foreach (var entry in GetAllPersonDetails(null, selector, cancellationToken))
             yield return entry;
     }
-    
+
     /// <summary>
     /// Enumerates all person details on the Lemmy instance matching a specified request.
     /// </summary>
@@ -562,7 +564,7 @@ public class LemmyHttp : LemmyHttpClient
 
         return community?.Communities?.FirstOrDefault()?.Community?.Id;
     }
-    
+
     #region From lemmy-js-client, ported to C#
 
     /**
@@ -1869,6 +1871,82 @@ public class LemmyHttp : LemmyHttpClient
             request,
             cancellationToken: cancellationToken
         );
+
+    public async Task<UploadImageResponse?> UploadImage(
+        string imagePath,
+        string? auth = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var mediaType = Path.GetExtension(imagePath).ToLowerInvariant() switch
+        {
+            ".png" => "image/png",
+            ".jpg" => "image/jpeg",
+            ".jpeg" => "image/jpeg",
+            ".gif" => "image/gif",
+            ".webp" => "image/webp",
+            ".svg" => "image/svg+xml",
+            ".bmp" => "image/bmp",
+            ".ico" => "image/x-icon",
+            ".tiff" => "image/tiff",
+            ".tif" => "image/tiff",
+            ".heic" => "image/heic",
+            ".heif" => "image/heif",
+            ".avif" => "image/avif",
+            _ => throw new ArgumentOutOfRangeException(
+                "The specified file does not have an associated media type defined."
+            )
+        };
+
+        var content = await File.ReadAllBytesAsync(imagePath, cancellationToken);
+        return await UploadImage(
+            content: content,
+            mediaType: mediaType,
+            auth: auth,
+            cancellationToken: cancellationToken
+        );
+    }
+
+    public async Task<UploadImageResponse?> UploadImage(
+        byte[] content,
+        string mediaType,
+        string? auth = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var payloadContent = new ReadOnlyMemoryContent(content);
+        payloadContent.Headers.ContentType = new MediaTypeHeaderValue(mediaType);
+        var namedPayloadContent = new NamedContent("image", payloadContent);
+
+        auth ??= AuthToken;
+        
+        var contents = auth == null
+            ? new[]
+            {
+                namedPayloadContent,
+            }
+            : new[]
+            {
+                namedPayloadContent,
+                new NamedContent("Auth", new StringContent(auth))
+            };
+
+        var response = await PostFormContent<UploadImageResponse>(
+            path: "image",
+            cancellationToken: cancellationToken,
+            destination: RequestDestination.Pictrs,
+            contents: contents
+        );
+
+        var baseUrl = GetBaseUrl(RequestDestination.Pictrs);
+        foreach (var file in response.Files)
+        {
+            var name = file.File;
+            file.Url = UriUtils.GetUri(baseUrl, "image", name);
+        }
+
+        return response;
+    }
 
     #endregion
 }

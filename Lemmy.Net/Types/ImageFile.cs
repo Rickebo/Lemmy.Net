@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Lemmy.Net.Types
 {
 
@@ -9,6 +11,8 @@ namespace Lemmy.Net.Types
         [System.Text.Json.Serialization.JsonPropertyName("file")]
         public string File { get; set; }
 
+        [JsonIgnore]
+        public Uri Url { get; set; }
     }
 }
 
