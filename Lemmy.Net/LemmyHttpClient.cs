@@ -1,4 +1,6 @@
-﻿using System.Net.Http.Json;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
@@ -50,6 +52,11 @@ public class LemmyHttpClient
             foreach (var header in headers)
                 _httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
         }
+    }
+
+    public void Authenticate(string token)
+    {
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }
 
     private string GetBaseUrl(RequestDestination destination) =>

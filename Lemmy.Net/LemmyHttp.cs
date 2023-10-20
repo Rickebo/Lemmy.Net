@@ -59,6 +59,8 @@ public class LemmyHttp : LemmyHttpClient
             return false;
 
         AuthToken = response.Jwt;
+        base.Authenticate(AuthToken);
+        
         return true;
     }
 
