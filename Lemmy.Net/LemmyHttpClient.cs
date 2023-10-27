@@ -138,10 +138,25 @@ public class LemmyHttpClient
 
         if (!response.IsSuccessStatusCode)
         {
-            var errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>(
-                cancellationToken: cancellationToken
-            );
-            
+            var errorResponse = new ErrorResponse();
+
+            if (response.Content.Headers.ContentType != null &&
+                response.Content.Headers.ContentType.MediaType != null && 
+                response.Content.Headers.ContentType.MediaType.Equals(JsonMediaType))
+            {
+                errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>(
+                    cancellationToken: cancellationToken
+                );
+            }
+            else
+            {
+                errorResponse.Error = await response.Content.ReadAsStringAsync(
+                    cancellationToken: cancellationToken
+                );
+
+                errorResponse.Error = "Not JSON: " + errorResponse.Error?[0..Math.Min(errorResponse.Error.Length, 50)];
+            }
+
             throw new ApiException(
                 $"Request to API failed with status code {response.StatusCode}: {errorResponse?.Error}",
                 errorResponse?.Error,
