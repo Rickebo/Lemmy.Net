@@ -1,0 +1,15 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "package-name": "Lemmy.Net",
+      "extra-files": [
+        {
+          "type": "xml",
+          "path": "Lemmy.Net/Lemmy.Net.csproj",
+          "xpath": "//Project/PropertyGroup/Version"
+        }
+      ]
+    }
+  }
+}

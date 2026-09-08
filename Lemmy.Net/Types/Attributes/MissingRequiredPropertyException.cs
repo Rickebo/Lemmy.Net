@@ -1,14 +1,11 @@
 namespace Lemmy.Net.Types.Attributes;
 
-public class MissingRequiredPropertyException : Exception
+public sealed class MissingRequiredPropertyException(
+    Type objectType,
+    string propertyName,
+    string message
+) : Exception(message)
 {
-    public Type ObjectType { get; }
-    public string PropertyName { get; }
-    
-    public MissingRequiredPropertyException(Type objectType, string propertyName, string message) 
-        : base(message)
-    {
-        ObjectType = objectType;
-        PropertyName = propertyName;
-    }
+    public Type ObjectType { get; } = objectType;
+    public string PropertyName { get; } = propertyName;
 }

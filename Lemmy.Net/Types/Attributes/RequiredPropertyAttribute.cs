@@ -1,5 +1,4 @@
-﻿namespace Lemmy.Net.Types.Attributes;
+namespace Lemmy.Net.Types.Attributes;
 
-public class RequiredPropertyAttribute : Attribute
-{
-}
+[AttributeUsage(AttributeTargets.Property)]
+public sealed class RequiredPropertyAttribute : Attribute;

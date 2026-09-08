@@ -1,47 +1,87 @@
 # Lemmy.Net
-[![Nuget](https://img.shields.io/nuget/v/Lemmy.Net)](https://www.nuget.org/packages/Lemmy.Net)
 
-A .NET 7 library for interacting with the Lemmy API, based on [lemmy-js-client](https://github.com/LemmyNet/lemmy-js-client) and written in C#.
+[![NuGet](https://img.shields.io/nuget/v/Lemmy.Net)](https://www.nuget.org/packages/Lemmy.Net)
+[![CI](https://github.com/Rickebo/Lemmy.Net/actions/workflows/ci.yml/badge.svg)](https://github.com/Rickebo/Lemmy.Net/actions/workflows/ci.yml)
 
-## Prerequisites
-- [.NET 7](https://dotnet.microsoft.com/download/dotnet/7.0) or later
+A strongly typed .NET client for the Lemmy v3 API.
 
-## Documentation
-See the [lemmy-js-client docs](https://join-lemmy.org/api/classes/LemmyHttp.html) for documentation.
+## Support
+
+Lemmy.Net targets .NET 10 and tracks the API used by Lemmy 0.19.20. Its generated
+models are pinned to commit `48bd89285e8c3da85cddb020ce8dbc3c94846670`
+of the upstream [`lemmy-js-client`](https://github.com/LemmyNet/lemmy-js-client)
+v0.19 branch.
+
+The .NET Lemmy ecosystem remains small. As of September 2026, the other public
+NuGet clients (`Lemmy.Net.Client` and `dotNETLemmy.API`) have not received code
+updates since 2023. There is no maintained, dominant replacement for this
+library, so continued maintenance is useful rather than redundant.
 
 ## Installation
 
-### NuGet
-Either find and install the [Lemmy.Net package](https://www.nuget.org/packages/Lemmy.Net) in your IDE's NuGet package manager, or run the following command in your project directory:
-```sh
+```shell
 dotnet add package Lemmy.Net
 ```
 
+## Usage
 
-
-## Example usage
-See [Examples](Examples) for fully-working example projects on how the API can be used.
-
-To print post titles from the [lemmy.ml](https://lemmy.ml) instance, one by one until the user presses any key other than`n`:
-```cs
+```csharp
 using Lemmy.Net;
 
-var client = new LemmyHttp("https://lemmy.ml");
-await foreach (var postView in api.GetAllPosts())
+using var client = new LemmyHttp("https://lemmy.ml");
+
+await foreach (var postView in client.GetAllPosts())
 {
     Console.WriteLine(postView.Post.Name);
-    
-    if (Console.ReadKey().KeyChar != 'n')
-        return;
 }
 ```
 
-To list all communities on the [ds9.lemmy.ml](https://dev.lemmy.ml) instance:
-```cs
-var api = new LemmyHttp(
-    "https://ds9.lemmy.ml"
-);
+Authenticated requests use a bearer token:
 
-await foreach (var communityView in api.ListAllCommunities())
-    Console.WriteLine(communityView.Community.Name + "@" + new Uri(communityView.Community.ActorId).Host);
+```csharp
+if (!await client.Login("username", "password"))
+    throw new InvalidOperationException("Login failed.");
+
+var replies = await client.GetReplies(new() { UnreadOnly = true });
 ```
+
+See the [examples](Examples) and the upstream
+[`lemmy-js-client` API documentation](https://join-lemmy.org/api/classes/LemmyHttp.html)
+for the corresponding request and response types.
+
+## Regenerating API models
+
+The model generator is deliberately dependency-light. It downloads an exact
+upstream commit, converts the `ts-rs` TypeScript declarations to nullable C#
+models, and replaces generated files in `Lemmy.Net/Types` while preserving the
+few handwritten support types.
+
+Requirements are Node.js, `curl`, and `tar`:
+
+```shell
+./utils/generate-models.sh
+dotnet test Lemmy.Net.sln
+```
+
+To update Lemmy support, change `upstream_commit` in
+[`utils/generate-models.sh`](utils/generate-models.sh), regenerate, then adapt
+the handwritten methods in `Lemmy.Net/LemmyHttp.cs` to upstream endpoint
+changes. CI reruns generation and fails if committed models have drifted.
+
+## Development and releases
+
+Changes are made through pull requests. The CI workflow uses GitHub-hosted
+runners to regenerate models, build, test, and pack the library. Conventional
+commit messages drive Release Please on the default branch.
+
+When a Release Please PR is merged, the release workflow:
+
+1. creates the GitHub release and changelog;
+2. publishes the NuGet and symbol packages to NuGet.org using the
+   `NUGET_API_KEY` repository secret;
+3. publishes the same package files as an OCI artifact at
+   `ghcr.io/rickebo/lemmy.net:<version>`; and
+4. attaches the package files to the GitHub release.
+
+GHCR is an OCI registry rather than a NuGet feed. Consumers should install from
+NuGet.org; the GHCR artifact exists for provenance and mirroring.
