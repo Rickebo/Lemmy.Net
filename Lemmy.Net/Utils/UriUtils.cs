@@ -9,7 +9,7 @@ public static class UriUtils
         
         var queryString = GetQueryString(content);
 
-        if (queryString == null)
+        if (string.IsNullOrEmpty(queryString))
             return uri;
         
         if (!queryString.StartsWith('?'))
@@ -23,7 +23,7 @@ public static class UriUtils
     }
 
     public static Uri GetUri(params string?[] parts) =>
-        GetUri((IEnumerable<string>)parts);
+        GetUri((IEnumerable<string?>)parts);
 
     public static Uri Append(this Uri uri, string part)
     {

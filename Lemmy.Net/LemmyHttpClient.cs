@@ -9,43 +9,46 @@ using Lemmy.Net.Utils;
 
 namespace Lemmy.Net;
 
-public class LemmyHttpClient
+public class LemmyHttpClient : IDisposable
 {
     private const string JsonMediaType = "application/json";
-    private const string ApiSuffix = "/api/v3/";
-    private const string PictrsSuffix = "/pictrs/image/";
+    private const string ApiPath = "/api/v3";
+    private const string PictrsPath = "/pictrs/image";
 
     private readonly string _apiUrl;
     private readonly string? _pictrsUrl;
 
     private readonly JsonSerializerOptions _jsonSerializerOptions;
     private readonly HttpClient _httpClient;
+    private readonly bool _disposeHttpClient;
     protected string? AuthToken { get; set; } = null;
 
     public LemmyHttpClient(
         string apiUrl,
         Dictionary<string, string>? headers = null,
         string? pictrsUrl = null,
-        JsonSerializerOptions? jsonSerializerOptions = null
+        JsonSerializerOptions? jsonSerializerOptions = null,
+        HttpClient? httpClient = null
     )
     {
         var trimmedApiUrl = apiUrl.TrimEnd('/');
         var trimmedPictrsUrl = pictrsUrl?.TrimEnd('/');
 
-        _apiUrl = trimmedApiUrl.EndsWith(ApiSuffix)
-            ? trimmedApiUrl
-            : trimmedApiUrl + ApiSuffix;
+        _apiUrl = trimmedApiUrl.EndsWith(ApiPath, StringComparison.OrdinalIgnoreCase)
+            ? trimmedApiUrl + "/"
+            : trimmedApiUrl + ApiPath + "/";
 
-        _pictrsUrl = trimmedPictrsUrl == null || (trimmedPictrsUrl?.EndsWith(PictrsSuffix) ?? false)
-            ? trimmedPictrsUrl
-            : trimmedPictrsUrl + PictrsSuffix;
+        _pictrsUrl = trimmedPictrsUrl == null
+            ? null
+            : trimmedPictrsUrl.EndsWith(PictrsPath, StringComparison.OrdinalIgnoreCase)
+                ? trimmedPictrsUrl + "/"
+                : trimmedPictrsUrl + PictrsPath + "/";
 
         _jsonSerializerOptions = jsonSerializerOptions ?? new JsonSerializerOptions();
-        _httpClient = new HttpClient();
-        _httpClient.DefaultRequestHeaders.Add(
-            "User-Agent",
-            "Lemmy.Net/0.1"
-        );
+        _httpClient = httpClient ?? new HttpClient();
+        _disposeHttpClient = httpClient is null;
+        var version = typeof(LemmyHttpClient).Assembly.GetName().Version?.ToString(3) ?? "unknown";
+        _httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("Lemmy.Net", version));
 
         if (headers != null)
         {
@@ -57,6 +60,14 @@ public class LemmyHttpClient
     public void Authenticate(string token)
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+    }
+
+    public void Dispose()
+    {
+        if (_disposeHttpClient)
+            _httpClient.Dispose();
+
+        GC.SuppressFinalize(this);
     }
 
     private string GetBaseUrl(RequestDestination destination) =>
@@ -80,9 +91,6 @@ public class LemmyHttpClient
         RequestDestination destination = RequestDestination.Api
     )
     {
-        if (AuthToken != null && body is IAuthenticable authenticable)
-            authenticable.Auth = AuthToken;
-
         ReflectionUtils.Validate(body);
 
         var baseUrl = GetBaseUrl(destination);
@@ -116,7 +124,7 @@ public class LemmyHttpClient
         RequestDestination destination = RequestDestination.Api
     ) => await _httpClient
         .SendAsync(
-            ConstructRequest(method, path, body),
+            ConstructRequest(method, path, body, destination),
             cancellationToken
         );
 
@@ -138,28 +146,24 @@ public class LemmyHttpClient
 
         if (!response.IsSuccessStatusCode)
         {
-            var errorResponse = new ErrorResponse();
-
-            if (response.Content.Headers.ContentType != null &&
-                response.Content.Headers.ContentType.MediaType != null && 
-                response.Content.Headers.ContentType.MediaType.Equals(JsonMediaType))
+            var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
+            var error = responseBody;
+            try
             {
-                errorResponse = await response.Content.ReadFromJsonAsync<ErrorResponse>(
-                    cancellationToken: cancellationToken
-                );
+                using var document = JsonDocument.Parse(responseBody);
+                var root = document.RootElement;
+                if (root.TryGetProperty("error", out var errorProperty) ||
+                    root.TryGetProperty("message", out errorProperty))
+                    error = errorProperty.GetString() ?? responseBody;
             }
-            else
+            catch (JsonException)
             {
-                errorResponse.Error = await response.Content.ReadAsStringAsync(
-                    cancellationToken: cancellationToken
-                );
-
-                errorResponse.Error = "Not JSON: " + errorResponse.Error?[0..Math.Min(errorResponse.Error.Length, 50)];
+                error = "Not JSON: " + responseBody[..Math.Min(responseBody.Length, 50)];
             }
 
             throw new ApiException(
-                $"Request to API failed with status code {response.StatusCode}: {errorResponse?.Error}",
-                errorResponse?.Error,
+                $"Request to API failed with status code {response.StatusCode}: {error}",
+                error,
                 response.StatusCode
             );
         }
@@ -182,6 +186,12 @@ public class LemmyHttpClient
         cancellationToken: cancellationToken,
         destination: destination
     );
+
+    protected Task<TReceive?> Post<TReceive>(
+        string path,
+        CancellationToken cancellationToken = default,
+        RequestDestination destination = RequestDestination.Api
+    ) => Post<EmptyBody, TReceive>(path, EmptyBody.Instance, cancellationToken, destination);
 
     protected async Task<TReceive?> Get<TQuery, TReceive>(
         string path,

@@ -10,12 +10,14 @@ public class LemmyHttp : LemmyHttpClient
         string apiUrl,
         Dictionary<string, string>? headers = null,
         string? pictrsUrl = null,
-        JsonSerializerOptions? jsonSerializerOptions = null
+        JsonSerializerOptions? jsonSerializerOptions = null,
+        HttpClient? httpClient = null
     ) : base(
         apiUrl,
         headers,
         pictrsUrl,
-        jsonSerializerOptions
+        jsonSerializerOptions,
+        httpClient
     )
     {
     }
@@ -381,7 +383,7 @@ public class LemmyHttp : LemmyHttpClient
     /// An async enumerable of all communities on the Lemmy instance matching the specified request.
     /// </returns>
     public async IAsyncEnumerable<CommunityView> ListAllCommunities(
-        ListCommunities request = null,
+        ListCommunities? request = null,
         [EnumeratorCancellation]
         CancellationToken cancellationToken = default
     )
@@ -557,7 +559,7 @@ public class LemmyHttp : LemmyHttpClient
         var community = await Search(new Search()
         {
             Type = SearchType.Communities,
-            Query = name,
+            Q = name,
             Limit = 1,
             ListingType = listingType
         });
@@ -572,15 +574,8 @@ public class LemmyHttp : LemmyHttpClient
    *
    * `HTTP.GET /site`
    */
-    public async Task<GetSiteResponse?> GetSite(
-        GetSite? request = null,
-        CancellationToken cancellationToken = default
-    ) =>
-        await Get<GetSite, GetSiteResponse>(
-            "site",
-            request,
-            cancellationToken: cancellationToken
-        );
+    public Task<GetSiteResponse?> GetSite(CancellationToken cancellationToken = default) =>
+        Get<GetSiteResponse>("site", cancellationToken);
 
 
     /**
@@ -614,12 +609,8 @@ public class LemmyHttp : LemmyHttpClient
    *
    * `HTTP.POST /user/leave_admin`
    */
-    public async Task<GetSiteResponse?> LeaveAdmin(LeaveAdmin request, CancellationToken cancellationToken = default) =>
-        await Post<LeaveAdmin, GetSiteResponse>(
-            "user/leave_admin",
-            request,
-            cancellationToken: cancellationToken
-        );
+    public Task<GetSiteResponse?> LeaveAdmin(CancellationToken cancellationToken = default) =>
+        Post<GetSiteResponse>("user/leave_admin", cancellationToken);
 
 
     /**
@@ -633,7 +624,7 @@ public class LemmyHttp : LemmyHttpClient
     ) =>
         await Get<GetModlog, GetModlogResponse>(
             "modlog",
-            request,
+            request ?? new(),
             cancellationToken: cancellationToken
         );
 
@@ -1500,15 +1491,8 @@ public class LemmyHttp : LemmyHttpClient
    *
    * `HTTP.GET /user/banned`
    */
-    public async Task<BannedPersonsResponse?> GetBannedPersons(
-        GetBannedPersons request,
-        CancellationToken cancellationToken = default
-    ) =>
-        await Get<GetBannedPersons, BannedPersonsResponse>(
-            "user/banned",
-            request,
-            cancellationToken: cancellationToken
-        );
+    public Task<BannedPersonsResponse?> GetBannedPersons(CancellationToken cancellationToken = default) =>
+        Get<BannedPersonsResponse>("user/banned", cancellationToken);
 
 
     /**
@@ -1532,15 +1516,8 @@ public class LemmyHttp : LemmyHttpClient
    *
    * `HTTP.GET /user/get_captcha`
    */
-    public async Task<GetCaptchaResponse?> GetCaptcha(
-        GetCaptcha? request = null,
-        CancellationToken cancellationToken = default
-    ) =>
-        await Get<GetCaptcha, GetCaptchaResponse>(
-            "user/get_captcha",
-            request ?? new(),
-            cancellationToken: cancellationToken
-        );
+    public Task<GetCaptchaResponse?> GetCaptcha(CancellationToken cancellationToken = default) =>
+        Get<GetCaptchaResponse>("user/get_captcha", cancellationToken);
 
 
     /**
@@ -1548,11 +1525,11 @@ public class LemmyHttp : LemmyHttpClient
    *
    * `HTTP.POST /user/delete_account`
    */
-    public async Task<DeleteAccountResponse?> DeleteAccount(
+    public async Task<SuccessResponse?> DeleteAccount(
         DeleteAccount request,
         CancellationToken cancellationToken = default
     ) =>
-        await Post<DeleteAccount, DeleteAccountResponse>(
+        await Post<DeleteAccount, SuccessResponse>(
             "user/delete_account",
             request,
             cancellationToken: cancellationToken
@@ -1564,11 +1541,11 @@ public class LemmyHttp : LemmyHttpClient
    *
    * `HTTP.POST /user/password_reset`
    */
-    public async Task<PasswordResetResponse?> PasswordReset(
+    public async Task<SuccessResponse?> PasswordReset(
         PasswordReset request,
         CancellationToken cancellationToken = default
     ) =>
-        await Post<PasswordReset, PasswordResetResponse>(
+        await Post<PasswordReset, SuccessResponse>(
             "user/password_reset",
             request,
             cancellationToken: cancellationToken
@@ -1596,15 +1573,8 @@ public class LemmyHttp : LemmyHttpClient
    *
    * `HTTP.POST /user/mark_all_as_read`
    */
-    public async Task<GetRepliesResponse?> MarkAllAsRead(
-        MarkAllAsRead request,
-        CancellationToken cancellationToken = default
-    ) =>
-        await Post<MarkAllAsRead, GetRepliesResponse>(
-            "user/mark_all_as_read",
-            request,
-            cancellationToken: cancellationToken
-        );
+    public Task<GetRepliesResponse?> MarkAllAsRead(CancellationToken cancellationToken = default) =>
+        Post<GetRepliesResponse>("user/mark_all_as_read", cancellationToken);
 
 
     /**
@@ -1660,15 +1630,8 @@ public class LemmyHttp : LemmyHttpClient
    *
    * `HTTP.GET /user/unread_count`
    */
-    public async Task<GetUnreadCountResponse?> GetUnreadCount(
-        GetUnreadCount request,
-        CancellationToken cancellationToken = default
-    ) =>
-        await Get<GetUnreadCount, GetUnreadCountResponse>(
-            "user/unread_count",
-            request,
-            cancellationToken: cancellationToken
-        );
+    public Task<GetUnreadCountResponse?> GetUnreadCount(CancellationToken cancellationToken = default) =>
+        Get<GetUnreadCountResponse>("user/unread_count", cancellationToken);
 
 
     /**
@@ -1676,11 +1639,11 @@ public class LemmyHttp : LemmyHttpClient
    *
    * `HTTP.POST /user/verify_email`
    */
-    public async Task<VerifyEmailResponse?> VerifyEmail(
+    public async Task<SuccessResponse?> VerifyEmail(
         VerifyEmail request,
         CancellationToken cancellationToken = default
     ) =>
-        await Post<VerifyEmail, VerifyEmailResponse>(
+        await Post<VerifyEmail, SuccessResponse>(
             "user/verify_email",
             request,
             cancellationToken: cancellationToken
@@ -1705,15 +1668,12 @@ public class LemmyHttp : LemmyHttpClient
    *
    * `HTTP.GET /admin/registration_application/count`
    */
-    public async Task<GetUnreadRegistrationApplicationCountResponse?> GetUnreadRegistrationApplicationCount(
-        GetUnreadRegistrationApplicationCount request,
+    public Task<GetUnreadRegistrationApplicationCountResponse?> GetUnreadRegistrationApplicationCount(
         CancellationToken cancellationToken = default
-    ) =>
-        await Get<GetUnreadRegistrationApplicationCount, GetUnreadRegistrationApplicationCountResponse>(
-            "admin/registration_application/count",
-            request,
-            cancellationToken: cancellationToken
-        );
+    ) => Get<GetUnreadRegistrationApplicationCountResponse>(
+        "admin/registration_application/count",
+        cancellationToken
+    );
 
 
     /**
@@ -1753,11 +1713,11 @@ public class LemmyHttp : LemmyHttpClient
    *
    * `HTTP.POST /admin/purge/person`
    */
-    public async Task<PurgeItemResponse?> PurgePerson(
+    public async Task<SuccessResponse?> PurgePerson(
         PurgePerson request,
         CancellationToken cancellationToken = default
     ) =>
-        await Post<PurgePerson, PurgeItemResponse>(
+        await Post<PurgePerson, SuccessResponse>(
             "admin/purge/person",
             request,
             cancellationToken: cancellationToken
@@ -1769,11 +1729,11 @@ public class LemmyHttp : LemmyHttpClient
    *
    * `HTTP.POST /admin/purge/community`
    */
-    public async Task<PurgeItemResponse?> PurgeCommunity(
+    public async Task<SuccessResponse?> PurgeCommunity(
         PurgeCommunity request,
         CancellationToken cancellationToken = default
     ) =>
-        await Post<PurgeCommunity, PurgeItemResponse>(
+        await Post<PurgeCommunity, SuccessResponse>(
             "admin/purge/community",
             request,
             cancellationToken: cancellationToken
@@ -1785,8 +1745,8 @@ public class LemmyHttp : LemmyHttpClient
    *
    * `HTTP.POST /admin/purge/post`
    */
-    public async Task<PurgeItemResponse?> PurgePost(PurgePost request, CancellationToken cancellationToken = default) =>
-        await Post<PurgePost, PurgeItemResponse>(
+    public async Task<SuccessResponse?> PurgePost(PurgePost request, CancellationToken cancellationToken = default) =>
+        await Post<PurgePost, SuccessResponse>(
             "admin/purge/post",
             request,
             cancellationToken: cancellationToken
@@ -1798,11 +1758,11 @@ public class LemmyHttp : LemmyHttpClient
    *
    * `HTTP.POST /admin/purge/comment`
    */
-    public async Task<PurgeItemResponse?> PurgeComment(
+    public async Task<SuccessResponse?> PurgeComment(
         PurgeComment request,
         CancellationToken cancellationToken = default
     ) =>
-        await Post<PurgeComment, PurgeItemResponse>(
+        await Post<PurgeComment, SuccessResponse>(
             "admin/purge/comment",
             request,
             cancellationToken: cancellationToken
@@ -1846,11 +1806,11 @@ public class LemmyHttp : LemmyHttpClient
    *
    * `HTTP.Post /custom_emoji/delete`
    */
-    public async Task<DeleteCustomEmojiResponse?> DeleteCustomEmoji(
+    public async Task<SuccessResponse?> DeleteCustomEmoji(
         DeleteCustomEmoji request,
         CancellationToken cancellationToken = default
     ) =>
-        await Post<DeleteCustomEmoji, DeleteCustomEmojiResponse>(
+        await Post<DeleteCustomEmoji, SuccessResponse>(
             "custom_emoji/delete",
             request,
             cancellationToken: cancellationToken
@@ -1862,15 +1822,79 @@ public class LemmyHttp : LemmyHttpClient
    *
    * `HTTP.Get /federated_instances`
    */
-    public async Task<GetFederatedInstancesResponse?> GetFederatedInstances(
-        GetFederatedInstances? request = null,
+    public Task<GetFederatedInstancesResponse?> GetFederatedInstances(
         CancellationToken cancellationToken = default
-    ) =>
-        await Get<GetFederatedInstances, GetFederatedInstancesResponse>(
-            "federated_instances",
-            request,
-            cancellationToken: cancellationToken
-        );
+    ) => Get<GetFederatedInstancesResponse>("federated_instances", cancellationToken);
+
+    public Task<GenerateTotpSecretResponse?> GenerateTotpSecret(
+        CancellationToken cancellationToken = default
+    ) => Post<GenerateTotpSecretResponse>("user/totp/generate", cancellationToken);
+
+    public Task<UpdateTotpResponse?> UpdateTotp(
+        UpdateTotp request,
+        CancellationToken cancellationToken = default
+    ) => Post<UpdateTotp, UpdateTotpResponse>("user/totp/update", request, cancellationToken);
+
+    public Task<SuccessResponse?> Logout(CancellationToken cancellationToken = default) =>
+        Post<SuccessResponse>("user/logout", cancellationToken);
+
+    public Task<SuccessResponse?> ValidateAuth(CancellationToken cancellationToken = default) =>
+        Get<SuccessResponse>("user/validate_auth", cancellationToken);
+
+    public Task<List<LoginToken>?> ListLogins(CancellationToken cancellationToken = default) =>
+        Get<List<LoginToken>>("user/list_logins", cancellationToken);
+
+    public Task<string?> ExportSettings(CancellationToken cancellationToken = default) =>
+        Get<string>("user/export_settings", cancellationToken);
+
+    public Task<SuccessResponse?> ImportSettings(
+        JsonElement settings,
+        CancellationToken cancellationToken = default
+    ) => Post<JsonElement, SuccessResponse>("user/import_settings", settings, cancellationToken);
+
+    public Task<ListMediaResponse?> ListMedia(
+        ListMedia? request = null,
+        CancellationToken cancellationToken = default
+    ) => Get<ListMedia, ListMediaResponse>("account/list_media", request ?? new(), cancellationToken);
+
+    public Task<ListMediaResponse?> ListAllMedia(
+        ListMedia? request = null,
+        CancellationToken cancellationToken = default
+    ) => Get<ListMedia, ListMediaResponse>("admin/list_all_media", request ?? new(), cancellationToken);
+
+    public Task<SuccessResponse?> HideCommunity(
+        HideCommunity request,
+        CancellationToken cancellationToken = default
+    ) => Put<HideCommunity, SuccessResponse>("community/hide", request, cancellationToken);
+
+    public Task<SuccessResponse?> HidePost(
+        HidePost request,
+        CancellationToken cancellationToken = default
+    ) => Post<HidePost, SuccessResponse>("post/hide", request, cancellationToken);
+
+    public Task<ListPostLikesResponse?> ListPostLikes(
+        ListPostLikes request,
+        CancellationToken cancellationToken = default
+    ) => Get<ListPostLikes, ListPostLikesResponse>("post/like/list", request, cancellationToken);
+
+    public Task<ListCommentLikesResponse?> ListCommentLikes(
+        ListCommentLikes request,
+        CancellationToken cancellationToken = default
+    ) => Get<ListCommentLikes, ListCommentLikesResponse>("comment/like/list", request, cancellationToken);
+
+    public Task<RegistrationApplicationResponse?> GetRegistrationApplication(
+        GetRegistrationApplication request,
+        CancellationToken cancellationToken = default
+    ) => Get<GetRegistrationApplication, RegistrationApplicationResponse>(
+        "admin/registration_application",
+        request,
+        cancellationToken
+    );
+
+    public Task<BlockInstanceResponse?> BlockInstance(
+        BlockInstance request,
+        CancellationToken cancellationToken = default
+    ) => Post<BlockInstance, BlockInstanceResponse>("site/block", request, cancellationToken);
 
     #endregion
 }

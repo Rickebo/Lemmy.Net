@@ -1,7 +1,7 @@
-﻿namespace Lemmy.Net.Types;
+namespace Lemmy.Net.Types;
 
 public interface IPaginatedResult
 {
-    public long? Limit { get; set; }
-    public long? Page { get; set; }
+    long? Limit { get; set; }
+    long? Page { get; set; }
 }

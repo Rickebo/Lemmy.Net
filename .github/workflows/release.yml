@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      - if: steps.release.outputs.release_created == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - if: steps.release.outputs.release_created == 'true'
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+      - if: steps.release.outputs.release_created == 'true'
+        name: Build, test, and pack
+        run: |
+          dotnet restore Lemmy.Net.sln
+          dotnet test Lemmy.Net.sln --configuration Release --no-restore
+          dotnet pack Lemmy.Net/Lemmy.Net.csproj --configuration Release --no-build --output artifacts
+      - if: steps.release.outputs.release_created == 'true'
+        name: Publish to NuGet.org
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push 'artifacts/*.nupkg' --api-key "${NUGET_API_KEY}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+      - if: steps.release.outputs.release_created == 'true'
+        uses: oras-project/setup-oras@1d808f7d7f6995cc68b7bf507bfe5c5446e1dc9d # v2.0.1
+      - if: steps.release.outputs.release_created == 'true'
+        name: Publish package artifact to GHCR
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          echo "${GHCR_TOKEN}" | oras login ghcr.io --username "${GITHUB_ACTOR}" --password-stdin
+          oras push "ghcr.io/${GITHUB_REPOSITORY,,}:${RELEASE_VERSION}" \
+            "artifacts/Lemmy.Net.${RELEASE_VERSION}.nupkg:application/vnd.nuget.package" \
+            "artifacts/Lemmy.Net.${RELEASE_VERSION}.snupkg:application/vnd.nuget.symbols"
+      - if: steps.release.outputs.release_created == 'true'
+        name: Upload packages to GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag_name }}
+        run: gh release upload "${RELEASE_TAG}" artifacts/*.*nupkg

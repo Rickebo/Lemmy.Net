@@ -5,11 +5,12 @@ var api = new LemmyHttp(
     Environment.GetEnvironmentVariable("LEMMY_API_URL") ?? "https://lemmy.ml"
 );
 
-// Log in with username and password provided from environment variables.
-if (!await api.Login(
-        usernameOrEmail: Environment.GetEnvironmentVariable("LEMMY_USERNAME"),
-        password: Environment.GetEnvironmentVariable("LEMMY_PASSWORD")
-    ))
+// Log in with credentials provided through environment variables.
+var username = Environment.GetEnvironmentVariable("LEMMY_USERNAME")
+    ?? throw new InvalidOperationException("LEMMY_USERNAME is required.");
+var password = Environment.GetEnvironmentVariable("LEMMY_PASSWORD")
+    ?? throw new InvalidOperationException("LEMMY_PASSWORD is required.");
+if (!await api.Login(username, password))
     throw new Exception(
         "Failed to log in to Lemmy instance with api url, username and password provided from" +
         " environment variables."

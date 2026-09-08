@@ -7,19 +7,19 @@ var api = new LemmyHttp(
 var instances = await api.GetFederatedInstances();
 const string indent = "    ";
 
-if (instances != null)
+if (instances?.FederatedInstances is { } federatedInstances)
 {
     var types = new[]
     {
-        ("Linked", instances.FederatedInstances.Linked),
-        ("Allowed", instances.FederatedInstances.Allowed),
-        ("Blocked", instances.FederatedInstances.Blocked)
+        ("Linked", federatedInstances.Linked),
+        ("Allowed", federatedInstances.Allowed),
+        ("Blocked", federatedInstances.Blocked)
     };
 
     foreach (var (type, typeInstances) in types)
     {
         Console.WriteLine($"{type} instances:");
-        foreach (var instance in instances.FederatedInstances.Linked)
+        foreach (var instance in typeInstances ?? [])
             Console.WriteLine($"{indent}{instance.Domain}");
 
         Console.WriteLine();
