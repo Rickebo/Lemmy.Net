@@ -8,6 +8,58 @@ namespace Lemmy.Net.Tests;
 public sealed class LemmyHttpTests
 {
     [Test]
+    public async Task UploadImageUsesAuthenticatedMultipartPictrsRoute()
+    {
+        var handler = new RecordingHandler(_ => Json(
+            HttpStatusCode.Created,
+            "{\"msg\":\"ok\",\"files\":[{\"file\":\"picture.png\",\"delete_token\":\"secret\"}]}"
+        ));
+        using var client = CreateClient(handler);
+        client.Authenticate("test-token");
+        await using var image = new MemoryStream([1, 2, 3]);
+
+        var response = await client.UploadImage(new UploadImage
+        {
+            Image = image,
+            FileName = "picture.png",
+            ContentType = "image/png"
+        });
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(handler.Request!.Method, Is.EqualTo(HttpMethod.Post));
+            Assert.That(handler.Request.RequestUri!.ToString(), Is.EqualTo("https://example.test/pictrs/image"));
+            Assert.That(handler.Request.Headers.Authorization?.Parameter, Is.EqualTo("test-token"));
+            Assert.That(handler.Request.Content, Is.TypeOf<MultipartFormDataContent>());
+            Assert.That(response!.Url, Is.EqualTo("https://example.test/pictrs/image/picture.png"));
+            Assert.That(response.DeleteUrl, Is.EqualTo("https://example.test/pictrs/image/delete/secret/picture.png"));
+        });
+    }
+
+    [Test]
+    public async Task DeleteImageUsesEscapedPictrsRouteAndReturnsSuccess()
+    {
+        var handler = new RecordingHandler(_ => new HttpResponseMessage(HttpStatusCode.NoContent));
+        using var client = CreateClient(handler);
+
+        var deleted = await client.DeleteImage(new DeleteImage
+        {
+            Token = "secret/token",
+            FileName = "picture name.png"
+        });
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(deleted, Is.True);
+            Assert.That(handler.Request!.Method, Is.EqualTo(HttpMethod.Get));
+            Assert.That(
+                handler.Request.RequestUri!.AbsolutePath,
+                Is.EqualTo("/pictrs/image/delete/secret%2Ftoken/picture%20name.png")
+            );
+        });
+    }
+
+    [Test]
     public async Task GetSiteUsesV3RouteAndBearerToken()
     {
         var handler = new RecordingHandler(_ => Json(HttpStatusCode.OK, "{}"));
