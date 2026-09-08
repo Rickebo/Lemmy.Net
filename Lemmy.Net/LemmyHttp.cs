@@ -1896,5 +1896,15 @@ public class LemmyHttp : LemmyHttpClient
         CancellationToken cancellationToken = default
     ) => Post<BlockInstance, BlockInstanceResponse>("site/block", request, cancellationToken);
 
+    public Task<UploadImageResponse?> UploadImage(
+        UploadImage request,
+        CancellationToken cancellationToken = default
+    ) => UploadImageContent(request, cancellationToken);
+
+    public Task<bool> DeleteImage(
+        DeleteImage request,
+        CancellationToken cancellationToken = default
+    ) => DeleteImageContent(request, cancellationToken);
+
     #endregion
 }

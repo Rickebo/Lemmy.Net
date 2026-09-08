@@ -148,7 +148,13 @@ function generateEnum(name, source) {
 }
 
 await mkdir(outputDirectory, { recursive: true });
-const preservedFiles = new Set(["IPaginatedResult.cs", "ImageFile.cs", "UploadImageResponse.cs"]);
+const preservedFiles = new Set([
+  "IPaginatedResult.cs",
+  "ImageFile.cs",
+  "UploadImage.cs",
+  "UploadImageResponse.cs",
+  "DeleteImage.cs",
+]);
 for (const file of await readdir(outputDirectory)) {
   if (file.endsWith(".cs") && !preservedFiles.has(file)) {
     await rm(join(outputDirectory, file));

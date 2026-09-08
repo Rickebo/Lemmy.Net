@@ -16,7 +16,7 @@ public class LemmyHttpClient : IDisposable
     private const string PictrsPath = "/pictrs/image";
 
     private readonly string _apiUrl;
-    private readonly string? _pictrsUrl;
+    private readonly string _pictrsUrl;
 
     private readonly JsonSerializerOptions _jsonSerializerOptions;
     private readonly HttpClient _httpClient;
@@ -38,11 +38,13 @@ public class LemmyHttpClient : IDisposable
             ? trimmedApiUrl + "/"
             : trimmedApiUrl + ApiPath + "/";
 
-        _pictrsUrl = trimmedPictrsUrl == null
-            ? null
-            : trimmedPictrsUrl.EndsWith(PictrsPath, StringComparison.OrdinalIgnoreCase)
-                ? trimmedPictrsUrl + "/"
-                : trimmedPictrsUrl + PictrsPath + "/";
+        var apiOrigin = trimmedApiUrl.EndsWith(ApiPath, StringComparison.OrdinalIgnoreCase)
+            ? trimmedApiUrl[..^ApiPath.Length]
+            : trimmedApiUrl;
+        var pictrsOrigin = trimmedPictrsUrl ?? apiOrigin;
+        _pictrsUrl = pictrsOrigin.EndsWith(PictrsPath, StringComparison.OrdinalIgnoreCase)
+            ? pictrsOrigin + "/"
+            : pictrsOrigin + PictrsPath + "/";
 
         _jsonSerializerOptions = jsonSerializerOptions ?? new JsonSerializerOptions();
         _httpClient = httpClient ?? new HttpClient();
@@ -171,6 +173,83 @@ public class LemmyHttpClient : IDisposable
         return await response.Content.ReadFromJsonAsync<TReceive>(
             _jsonSerializerOptions,
             cancellationToken: cancellationToken
+        );
+    }
+
+    protected async Task<UploadImageResponse?> UploadImageContent(
+        UploadImage request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var content = new MultipartFormDataContent();
+        var image = new StreamContent(request.Image);
+        if (!string.IsNullOrWhiteSpace(request.ContentType))
+            image.Headers.ContentType = new MediaTypeHeaderValue(request.ContentType);
+        content.Add(image, "images[]", request.FileName);
+
+        using var message = new HttpRequestMessage(HttpMethod.Post, _pictrsUrl.TrimEnd('/'))
+        {
+            Content = content
+        };
+        using var response = await _httpClient.SendAsync(message, cancellationToken);
+        if (!response.IsSuccessStatusCode)
+            await ThrowApiException(response, cancellationToken);
+
+        var result = await response.Content.ReadFromJsonAsync<UploadImageResponse>(
+            _jsonSerializerOptions,
+            cancellationToken
+        );
+        if (result?.Files?.FirstOrDefault() is { } file)
+        {
+            result.Url = _pictrsUrl + Uri.EscapeDataString(file.File);
+            result.DeleteUrl = _pictrsUrl + "delete/" +
+                Uri.EscapeDataString(file.DeleteToken) + "/" +
+                Uri.EscapeDataString(file.File);
+        }
+
+        return result;
+    }
+
+    protected async Task<bool> DeleteImageContent(
+        DeleteImage request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var url = _pictrsUrl + "delete/" +
+            Uri.EscapeDataString(request.Token) + "/" +
+            Uri.EscapeDataString(request.FileName);
+        using var response = await _httpClient.GetAsync(url, cancellationToken);
+        if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            return true;
+        if (!response.IsSuccessStatusCode)
+            await ThrowApiException(response, cancellationToken);
+        return false;
+    }
+
+    private static async Task ThrowApiException(
+        HttpResponseMessage response,
+        CancellationToken cancellationToken
+    )
+    {
+        var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
+        var error = responseBody;
+        try
+        {
+            using var document = JsonDocument.Parse(responseBody);
+            var root = document.RootElement;
+            if (root.TryGetProperty("error", out var errorProperty) ||
+                root.TryGetProperty("message", out errorProperty))
+                error = errorProperty.GetString() ?? responseBody;
+        }
+        catch (JsonException)
+        {
+            error = "Not JSON: " + responseBody[..Math.Min(responseBody.Length, 50)];
+        }
+
+        throw new ApiException(
+            $"Request to API failed with status code {response.StatusCode}: {error}",
+            error,
+            response.StatusCode
         );
     }
 
