@@ -9,6 +9,22 @@ permissions:
   contents: read
 
 jobs:
+  conventional-commits:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: convco/convco-action@f61344a725ce779cd2c8977a24ac4704deed3d12 # v0.3.0
+        with:
+          convco_version: v0.7.2
+      - name: Validate pull request commits
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: convco check "${BASE_SHA}..${HEAD_SHA}"
+
   validate:
     runs-on: ubuntu-latest
     steps:
